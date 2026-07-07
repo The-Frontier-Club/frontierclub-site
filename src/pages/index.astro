@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Creator-led group travel"
+  description="The Frontier Club runs creator-led group trips to places most people never go. See the trip calendar and join the next departure."
+>
+  <!-- HERO — placeholder structure; final design set in the design-system pass -->
+  <section class="section hero">
+    <div class="container">
+      <h1>Travel with the people whose adventures you already follow.</h1>
+      <p class="lede">
+        The Frontier Club runs small-group trips led by creators — real
+        itineraries, real access, in places most tours never reach.
+      </p>
+      <a class="btn" href="/calendar/">See upcoming trips</a>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="container">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div>
+          <h3>Pick a trip</h3>
+          <p>
+            Browse the calendar and find a departure led by a creator you
+            follow, in a destination you have been waiting for.
+          </p>
+        </div>
+        <div>
+          <h3>Reserve your spot</h3>
+          <p>
+            Groups are small and trips sell out. Submit an inquiry and we
+            will walk you through booking.
+          </p>
+        </div>
+        <div>
+          <h3>Go</h3>
+          <p>
+            Logistics handled by experienced operators. You show up, we take
+            care of the rest.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED TRIPS — placeholder cards until trip data is added -->
+  <section class="section alt">
+    <div class="container">
+      <h2>Upcoming departures</h2>
+      <p>
+        <!-- TODO: replace with real trips from the 2026–2027 trip calendar -->
+        Trip calendar is being finalized. Check back soon or get in touch to
+        hear about departures first.
+      </p>
+      <a class="btn" href="/contact/">Get notified</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-7);
+  }
+
+  .lede {
+    font-size: 1.2rem;
+    max-width: 42rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-4);
+  }
+
+  .alt {
+    background: var(--color-surface);
+  }
+</style>

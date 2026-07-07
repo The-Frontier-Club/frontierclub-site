@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// TODO: replace with the real 2026–2027 trip calendar.
+// Keeping trips as data (not hard-coded HTML) so updating the calendar
+// means editing this array only.
+const trips = [
+  {
+    destination: 'Destination TBD',
+    dates: 'Dates TBD',
+    leader: 'Trip leader TBD',
+    spots: null,
+    status: 'coming-soon',
+  },
+];
+---
+
+<Layout
+  title="Trip Calendar"
+  description="Upcoming Frontier Club trips through 2027. Small groups, creator-led, limited spots per departure."
+>
+  <section class="section">
+    <div class="container">
+      <h1>Trip Calendar</h1>
+      <p class="lede">
+        Every departure, through 2027. Groups are small and spots are
+        limited, so if a trip catches your eye, do not wait.
+      </p>
+
+      <div class="trip-list">
+        {trips.map((trip) => (
+          <article class="trip-card">
+            <h2>{trip.destination}</h2>
+            <dl>
+              <div>
+                <dt>Dates</dt>
+                <dd>{trip.dates}</dd>
+              </div>
+              <div>
+                <dt>Led by</dt>
+                <dd>{trip.leader}</dd>
+              </div>
+              {trip.spots && (
+                <div>
+                  <dt>Spots</dt>
+                  <dd>{trip.spots}</dd>
+                </div>
+              )}
+            </dl>
+            {trip.status === 'coming-soon' ? (
+              <p class="status">Details coming soon</p>
+            ) : (
+              <a class="btn" href="/contact/">Inquire about this trip</a>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .lede {
+    font-size: 1.15rem;
+    max-width: 42rem;
+  }
+
+  .trip-list {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .trip-card {
+    border: 1px solid var(--color-line);
+    padding: var(--space-4);
+  }
+
+  dl {
+    display: flex;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+    margin: var(--space-3) 0;
+  }
+
+  dt {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-soft);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .status {
+    font-style: italic;
+    margin: 0;
+  }
+</style>

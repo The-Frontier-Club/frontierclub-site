@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// TODO: replace with real leader bios and photos.
+const leaders = [
+  {
+    name: 'Leader name',
+    bio: 'Short bio goes here — who they are, where they have been, and what their trips are like.',
+    photo: null, // '/images/leaders/name.jpg'
+  },
+];
+---
+
+<Layout
+  title="Trip Leaders"
+  description="Meet the creators who lead Frontier Club trips."
+>
+  <section class="section">
+    <div class="container">
+      <h1>Trip Leaders</h1>
+      <p class="lede">
+        Every Frontier Club trip is led by a creator who has actually been
+        there — and wants to take you with them.
+      </p>
+
+      <div class="leader-grid">
+        {leaders.map((leader) => (
+          <article class="leader-card">
+            {leader.photo ? (
+              <img src={leader.photo} alt={leader.name} />
+            ) : (
+              <div class="photo-placeholder" aria-hidden="true"></div>
+            )}
+            <h2>{leader.name}</h2>
+            <p>{leader.bio}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .lede {
+    font-size: 1.15rem;
+    max-width: 42rem;
+  }
+
+  .leader-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .photo-placeholder {
+    aspect-ratio: 4 / 5;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    margin-bottom: var(--space-3);
+  }
+
+  .leader-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-2);
+  }
+</style>
