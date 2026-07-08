@@ -2,7 +2,6 @@
 const links = [
   { href: '/', label: 'Home' },
   { href: '/calendar/', label: 'Trip Calendar' },
-  { href: '/leaders/', label: 'Trip Leaders' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
 ];
@@ -11,7 +10,7 @@ const current = Astro.url.pathname;
 
 <header class="site-header">
   <div class="container nav-inner">
-    <a href="/" class="wordmark">The Frontier Club</a>
+    <a href="/" class="wordmark">Frontier Club</a>
     <nav aria-label="Main navigation">
       <ul>
         {links.map((link) => (
@@ -31,6 +30,10 @@ const current = Astro.url.pathname;
 
 <style>
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--color-bg);
     border-bottom: 1px solid var(--color-line);
   }
 
@@ -39,21 +42,21 @@ const current = Astro.url.pathname;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-    padding-top: var(--space-3);
-    padding-bottom: var(--space-3);
+    padding-top: 20px;
+    padding-bottom: 20px;
     flex-wrap: wrap;
   }
 
   .wordmark {
     font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-decoration: none;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--color-accent);
   }
 
   ul {
     display: flex;
-    gap: var(--space-4);
+    gap: 32px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -61,13 +64,26 @@ const current = Astro.url.pathname;
   }
 
   nav a {
-    text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-nav-link);
+  }
+
+  nav a:hover {
+    color: var(--color-pink);
   }
 
   nav a[aria-current='page'] {
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    color: var(--color-ink);
+  }
+
+  @media (max-width: 720px) {
+    ul {
+      gap: 18px;
+    }
+
+    nav a {
+      font-size: 13px;
+    }
   }
 </style>

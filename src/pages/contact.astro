@@ -4,99 +4,107 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
   title="Contact"
-  description="Ask about a trip, get on the list for new departures, or reach the Frontier Club team."
+  description="Questions about a trip, booking, or becoming a leader — reach out to The Frontier Club."
 >
-  <section class="section">
-    <div class="container narrow">
-      <h1>Get in touch</h1>
-      <p class="lede">
-        Ask about a trip, get notified about new departures, or just say
-        hello.
+  <section class="page-header">
+    <h1>Let's talk</h1>
+    <p class="header-lede">
+      Questions about a trip, booking, or becoming a leader — reach out.
+    </p>
+  </section>
+
+  <section class="form-wrap">
+    <form
+      name="trip-inquiry"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+    >
+      <input type="hidden" name="form-name" value="trip-inquiry" />
+      <p class="hidden-field">
+        <label>Do not fill this out: <input name="bot-field" /></label>
       </p>
 
-      <!--
-        This form is wired for Netlify Forms: the `data-netlify` attribute
-        and hidden `form-name` input make it work automatically once the
-        site is hosted on Netlify. No backend needed.
-      -->
-      <form
-        name="trip-inquiry"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-      >
-        <input type="hidden" name="form-name" value="trip-inquiry" />
-        <p class="hidden-field">
-          <label>Do not fill this out: <input name="bot-field" /></label>
-        </p>
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required />
+      </div>
 
-        <div class="field">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required />
-        </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@email.com" required />
+      </div>
 
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
-        </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          placeholder="What's on your mind?"></textarea>
+      </div>
 
-        <div class="field">
-          <label for="trip">Which trip are you interested in?</label>
-          <input
-            type="text"
-            id="trip"
-            name="trip"
-            placeholder="Or 'not sure yet'"
-          />
-        </div>
-
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="5"></textarea>
-        </div>
-
-        <button type="submit" class="btn">Send inquiry</button>
-      </form>
-    </div>
+      <button type="submit" class="btn btn--accent">Send message →</button>
+    </form>
   </section>
 </Layout>
 
 <style>
-  .narrow {
-    max-width: 36rem;
+  .header-lede {
+    margin: 18px auto 0;
+    max-width: 480px;
+    font-size: clamp(14px, 1.4vw, 16px);
+    line-height: 1.6;
+    color: #fff;
+    font-weight: 700;
   }
 
-  .lede {
-    font-size: 1.15rem;
+  .form-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 64px 28px 90px;
   }
 
   form {
-    margin-top: var(--space-5);
-  }
-
-  .field {
-    margin-bottom: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 
   label {
     display: block;
+    font-size: 13px;
     font-weight: 600;
-    margin-bottom: var(--space-2);
+    color: var(--color-nav-link);
+    margin-bottom: 6px;
   }
 
   input,
   textarea {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--color-line);
-    font: inherit;
-    background: var(--color-bg);
+    border: 2px solid rgba(140, 74, 156, 0.25);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink);
+    outline: none;
+    background: #fff;
+  }
+
+  textarea {
+    resize: vertical;
   }
 
   input:focus,
   textarea:focus {
-    outline: 2px solid var(--color-ink);
-    outline-offset: 1px;
+    border-color: var(--color-accent);
+  }
+
+  button {
+    align-self: flex-start;
+    font-size: 14px;
+    padding: 14px 28px;
   }
 
   .hidden-field {

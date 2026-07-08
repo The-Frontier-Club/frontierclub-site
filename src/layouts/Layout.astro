@@ -24,10 +24,18 @@ const { title, description } = Astro.props;
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
-    <!-- TODO: add og:image once brand assets are ready -->
+    <meta property="og:image" content={new URL('/images/home-3.jpg', Astro.site)} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={Astro.url} />
+
+    <!-- Brand fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Unbounded:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <Nav />
