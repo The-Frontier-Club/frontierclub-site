@@ -1,32 +1,30 @@
 /* ============================================================
    The Frontier Club — Global styles
-   Design system ported from Claude Design (July 2026)
+   Palette: lime #bbff50 · olive #4a5438 · near-black #191919
+            off-white #f4f4f4 · tan #c29f81 · brown #482b01
    ============================================================ */
 
 :root {
-  /* Color tokens */
-  --color-bg: #F5EDE6;          /* warm cream */
-  --color-ink: #2B1F3D;         /* deep plum */
-  --color-ink-soft: #5A4470;    /* muted violet */
-  --color-nav-link: #3A2A52;
-  --color-accent: #8C4A9C;      /* purple */
-  --color-pink: #D9738F;
-  --color-gold: #F2B85E;
-  --color-lilac: #C98BC9;
-  --color-lilac-soft: #B79BC7;
-  --color-surface: #EDE0F0;     /* lavender panel */
-  --color-sun: #FCEBDD;
-  --color-deep: #4A2E6B;
-  --color-card: #ffffff;
-  --color-line: rgba(43, 31, 61, 0.08);
+  /* Brand colors */
+  --color-lime: #bbff50;
+  --color-olive: #4a5438;
+  --color-black: #191919;
+  --color-off: #f4f4f4;
+  --color-tan: #c29f81;
+  --color-brown: #482b01;
 
-  /* Type tokens */
-  --font-display: 'Unbounded', sans-serif;
-  --font-body: 'Libre Franklin', sans-serif;
+  /* Roles */
+  --color-bg: var(--color-black);
+  --color-ink: var(--color-off);
+  --color-ink-soft: #a8a8a8;
+  --color-accent: var(--color-lime);
+  --color-line: #2f2f2f;
+  --color-field: var(--color-off);
+  --color-field-ink: #8a8378;
 
-  /* Signature gradient */
-  --gradient-sunrise: linear-gradient(180deg, #F2B85E 0%, #D9738F 40%, #8C4A9C 75%, #4A2E6B 100%);
-  --gradient-sunrise-short: linear-gradient(180deg, #F2B85E 0%, #D9738F 55%, #8C4A9C 100%);
+  /* Type */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Barlow', sans-serif;
 
   /* Spacing scale */
   --space-1: 0.25rem;
@@ -69,7 +67,9 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  line-height: 1.15;
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: 0.01em;
   margin: 0 0 var(--space-3);
 }
 
@@ -78,12 +78,12 @@ p {
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-lime);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--color-pink);
+  color: #d3ff8a;
 }
 
 img {
@@ -93,8 +93,8 @@ img {
 }
 
 ::placeholder {
-  color: var(--color-ink-soft);
-  opacity: 0.6;
+  color: var(--color-field-ink);
+  opacity: 1;
 }
 
 .container {
@@ -108,66 +108,91 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-ink);
-  color: var(--color-bg);
-  font-family: var(--font-display);
+  background: var(--color-lime);
+  color: var(--color-black);
+  font-family: var(--font-body);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   padding: 16px 32px;
   border-radius: 100px 100px 100px 0;
   border: none;
   cursor: pointer;
-  box-shadow: 5px 5px 0 rgba(43, 31, 61, 0.25);
+  box-shadow: 5px 5px 0 var(--color-brown);
   text-decoration: none;
 }
 
 .btn:hover {
-  color: var(--color-bg);
+  color: var(--color-black);
   transform: translate(-1px, -1px);
-  box-shadow: 6px 6px 0 rgba(43, 31, 61, 0.25);
+  box-shadow: 6px 6px 0 var(--color-brown);
 }
 
-.btn--accent {
-  background: var(--color-accent);
-  box-shadow: 4px 4px 0 rgba(140, 74, 156, 0.3);
+.btn--dark {
+  background: var(--color-black);
+  color: var(--color-lime);
+  box-shadow: none;
 }
 
-.btn--accent:hover {
-  box-shadow: 5px 5px 0 rgba(140, 74, 156, 0.3);
+.btn--dark:hover {
+  color: var(--color-lime);
+  background: #232323;
+  transform: none;
 }
 
-/* Rotated eyebrow badge */
+/* Eyebrow badge */
 .badge {
   display: inline-block;
-  background: var(--color-ink);
-  color: var(--color-bg);
-  font-family: var(--font-display);
+  background: var(--color-lime);
+  color: var(--color-black);
+  font-family: var(--font-body);
   font-size: 11px;
-  font-weight: 600;
-  padding: 8px 16px;
+  font-weight: 700;
+  padding: 7px 14px;
   border-radius: 100px;
-  transform: rotate(-4deg);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.16em;
   white-space: nowrap;
 }
 
-/* Gradient page header (calendar / about / contact) */
-.page-header {
-  padding: 76px 28px 50px;
-  text-align: center;
-  background: var(--gradient-sunrise-short);
+/* Email capture pill */
+.signup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-field);
+  border-radius: 100px;
+  padding: 6px 6px 6px 24px;
+  width: 100%;
+  max-width: 440px;
 }
 
-.page-header h1 {
-  font-weight: 700;
-  font-size: clamp(30px, 4.5vw, 48px);
-  color: var(--color-ink);
-  max-width: 700px;
-  margin: 0 auto;
+.signup input[type='email'] {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-black);
+  flex: 1;
+  min-width: 0;
+}
+
+.signup .btn {
+  flex: none;
+  font-size: 14px;
+  padding: 13px 26px;
+  border-radius: 100px;
+  box-shadow: none;
+  white-space: nowrap;
+}
+
+.signup .btn:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-ink);
+  outline: 2px solid var(--color-lime);
   outline-offset: 2px;
 }
 
