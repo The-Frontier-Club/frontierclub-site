@@ -8,74 +8,82 @@ import Layout from '../layouts/Layout.astro';
 >
   <!-- HERO -->
   <section class="hero">
-    <div class="sunburst" aria-hidden="true"></div>
-    <div class="sun" aria-hidden="true"></div>
-    <div class="hero-texture" aria-hidden="true"></div>
-    <span class="badge hero-badge">PEAK EXPERIENCES ONLY</span>
-    <h1>Join The Frontier Club today!</h1>
-    <p class="hero-lede">
-      We curate real communities of people chasing transformational
-      experiences — creator-led trips to places most people never go.
-    </p>
-    <a class="btn" href="/calendar/">See upcoming trips →</a>
+    <img class="hero-photo" src="/images/home-3.jpg" alt="" />
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-inner container">
+      <span class="badge">PEAK EXPERIENCES ONLY</span>
+      <h1>Join the <span class="lime">Frontier Club</span></h1>
+      <p class="hero-lede">Dare to say yes.</p>
+      <form
+        id="waitlist"
+        class="signup hero-signup"
+        name="waitlist"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="waitlist" />
+        <p class="hidden-field">
+          <label>Do not fill this out: <input name="bot-field" /></label>
+        </p>
+        <input
+          type="email"
+          name="email"
+          placeholder="you@email.com"
+          aria-label="Email address"
+          required
+        />
+        <button type="submit" class="btn btn--dark">Join the waitlist</button>
+      </form>
+    </div>
   </section>
 
-  <!-- wavy divider -->
-  <svg
-    class="wave"
-    viewBox="0 0 1440 60"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M0,30 Q180,0 360,30 T720,30 T1080,30 T1440,30 V60 H0 Z"
-      fill="#F5EDE6"></path>
-  </svg>
-
-  <!-- photo trio -->
+  <!-- PHOTO TRIO -->
   <section class="photos container">
-    <div>
-      <img src="/images/home-1.jpg" alt="Creator trip photo" loading="lazy" />
-    </div>
-    <div class="photo-mid">
-      <img src="/images/home-2.jpg" alt="Group community photo" loading="lazy" />
-    </div>
-    <div>
-      <img src="/images/home-3.jpg" alt="Destination photo" loading="lazy" />
-    </div>
+    <img src="/images/home-1.jpg" alt="Creator trip photo" loading="lazy" />
+    <img
+      class="photo-mid"
+      src="/images/home-2.jpg"
+      alt="Group community photo"
+      loading="lazy"
+    />
+    <img
+      src="/images/trip-pakistan-hunza.jpg"
+      alt="Destination photo"
+      loading="lazy"
+    />
   </section>
 
-  <!-- how it works -->
+  <!-- HOW IT WORKS -->
   <section class="how-wrap">
-    <h2>How it works ✦</h2>
+    <h2>How it works</h2>
     <div class="how container">
       <div class="step">
-        <div class="num num-1">1</div>
+        <div class="num">1</div>
         <h3>Pick a trip</h3>
-        <p>Browse the calendar for a creator-led departure you've been waiting for.</p>
+        <p>Tell us where you want to go and we'll send the departure list first.</p>
       </div>
       <div class="step">
-        <div class="num num-2">2</div>
+        <div class="num">2</div>
         <h3>Reserve your spot</h3>
-        <p>Groups are small and trips sell out — we'll guide you through booking.</p>
+        <p>Groups are small and trips sell out — we'll walk you through booking.</p>
       </div>
       <div class="step">
-        <div class="num num-3">3</div>
+        <div class="num">3</div>
         <h3>Go</h3>
         <p>Experienced operators handle logistics. You just show up.</p>
       </div>
     </div>
   </section>
 
-  <!-- waitlist -->
+  <!-- CLOSING WAITLIST -->
   <section class="waitlist">
-    <h2>Join the waitlist today!</h2>
+    <h2>Join the waitlist today</h2>
     <p class="waitlist-copy">
-      The calendar is being finalized — first departures are coming in hot.
-      Be the first to hear when we lock dates.
+      First departures are coming in hot. Get the dates before anyone else does.
     </p>
     <form
-      class="waitlist-form"
+      class="signup waitlist-form"
       name="waitlist"
       method="POST"
       data-netlify="true"
@@ -92,7 +100,7 @@ import Layout from '../layouts/Layout.astro';
         aria-label="Email address"
         required
       />
-      <button type="submit" class="btn btn--accent waitlist-btn">Join 🚀</button>
+      <button type="submit" class="btn btn--dark">Join the waitlist</button>
     </form>
   </section>
 </Layout>
@@ -101,222 +109,162 @@ import Layout from '../layouts/Layout.astro';
   /* HERO */
   .hero {
     position: relative;
+    min-height: 620px;
+    display: flex;
+    align-items: flex-end;
     overflow: hidden;
-    padding: 96px 28px 130px;
-    text-align: center;
-    background: var(--gradient-sunrise);
   }
 
-  .sunburst {
+  .hero-photo {
     position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    width: 900px;
-    height: 900px;
-    background: repeating-conic-gradient(
-      from 0deg,
-      rgba(255, 236, 220, 0.5) 0deg 6deg,
-      transparent 6deg 18deg
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(25, 25, 25, 0.55) 0%,
+      rgba(25, 25, 25, 0.85) 100%
     );
-    border-radius: 50%;
-    opacity: 0.7;
   }
 
-  .sun {
-    position: absolute;
-    left: 50%;
-    top: 60px;
-    transform: translateX(-50%);
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    background: var(--color-sun);
-    box-shadow: 0 0 0 14px rgba(252, 235, 221, 0.3);
-  }
-
-  .hero-texture {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 90px;
-    background: repeating-linear-gradient(
-      0deg,
-      #2b1f3d 0 4px,
-      transparent 4px 11px
-    );
-    opacity: 0.12;
-  }
-
-  .hero-badge {
+  .hero-inner {
     position: relative;
-    margin-bottom: 26px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding-top: 150px;
+    padding-bottom: 60px;
   }
 
   .hero h1 {
-    position: relative;
-    font-weight: 700;
-    font-size: clamp(34px, 5vw, 58px);
-    line-height: 1.14;
-    color: var(--color-ink);
+    font-size: clamp(58px, 8vw, 104px);
+    color: var(--color-off);
     max-width: 800px;
-    margin: 0 auto;
+    margin: 0;
+  }
+
+  .lime {
+    color: var(--color-lime);
   }
 
   .hero-lede {
-    position: relative;
-    margin: 22px auto 0;
-    max-width: 560px;
-    font-size: clamp(15px, 1.6vw, 19px);
-    line-height: 1.6;
-    color: #000;
-    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 26px);
+    font-weight: 500;
+    line-height: 1.4;
+    color: #e2e2e2;
+    margin: 0;
   }
 
-  .hero .btn {
-    position: relative;
-    margin-top: 34px;
-  }
-
-  .wave {
-    display: block;
-    width: 100%;
-    height: 44px;
-    margin-top: -2px;
+  .hero-signup {
+    margin-top: 8px;
+    box-shadow: 5px 5px 0 var(--color-brown);
   }
 
   /* PHOTO TRIO */
   .photos {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    padding-bottom: 70px;
-  }
-
-  .photos > div {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .photo-mid {
-    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding-top: 64px;
+    padding-bottom: 64px;
   }
 
   .photos img {
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border-radius: 50% 50% 16px 16px;
   }
 
-  /* HOW IT WORKS */
+  .photo-mid {
+    margin-top: 26px;
+  }
+
+  /* HOW IT WORKS — lime slab */
   .how-wrap {
-    padding: 10px 28px 90px;
+    background: var(--color-lime);
+    padding: 72px 0;
   }
 
   .how-wrap h2 {
-    font-weight: 600;
-    font-size: clamp(22px, 3vw, 30px);
-    color: var(--color-accent);
+    font-size: clamp(38px, 5vw, 56px);
+    color: var(--color-black);
     text-align: center;
-    margin-bottom: 46px;
+    margin-bottom: 44px;
   }
 
   .how {
-    max-width: 1000px;
+    max-width: 940px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 36px;
+    gap: 32px;
   }
 
   .step {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 
   .num {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: var(--font-display);
-    font-size: 19px;
-    font-weight: 600;
-    margin: 0 auto 18px;
+    font-size: 60px;
+    line-height: 1;
+    color: var(--color-olive);
   }
-
-  .num-1 { background: var(--color-lilac); }
-  .num-2 { background: var(--color-pink); }
-  .num-3 { background: var(--color-accent); }
 
   .step h3 {
     font-family: var(--font-body);
     font-weight: 700;
-    font-size: 17px;
-    margin-bottom: 8px;
+    font-size: 19px;
+    color: var(--color-black);
+    margin: 0;
   }
 
   .step p {
     font-size: 14px;
-    color: var(--color-ink-soft);
     line-height: 1.6;
-    max-width: 260px;
-    margin: 0 auto;
+    color: #3c4430;
+    max-width: 250px;
+    margin: 0;
   }
 
-  /* WAITLIST */
+  /* CLOSING WAITLIST — brown */
   .waitlist {
-    padding: 70px 28px;
-    text-align: center;
-    background: var(--color-surface);
+    background: var(--color-brown);
+    padding: 72px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
 
   .waitlist h2 {
-    font-weight: 600;
-    font-size: clamp(22px, 3vw, 28px);
-    color: var(--color-accent);
-    margin-bottom: 14px;
+    font-size: clamp(34px, 4vw, 48px);
+    color: var(--color-off);
+    margin: 0;
   }
 
   .waitlist-copy {
     font-size: 15px;
-    color: var(--color-ink-soft);
     line-height: 1.6;
+    color: var(--color-tan);
     max-width: 440px;
-    margin: 0 auto;
+    text-align: center;
+    margin: 0;
   }
 
   .waitlist-form {
-    margin: 26px auto 0;
-    display: flex;
-    background: #fff;
-    border: 2px solid var(--color-accent);
-    border-radius: 100px;
-    padding: 6px 6px 6px 22px;
-    align-items: center;
-    gap: 10px;
-    max-width: 400px;
-  }
-
-  .waitlist-form input[type='email'] {
-    border: none;
-    outline: none;
-    background: transparent;
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--color-ink);
-    flex: 1;
-    min-width: 0;
-  }
-
-  .waitlist-btn {
-    flex: none;
-    font-size: 13px;
-    padding: 12px 22px;
-    border-radius: 100px;
+    margin-top: 14px;
   }
 
   .hidden-field {
@@ -325,12 +273,17 @@ import Layout from '../layouts/Layout.astro';
 
   /* MOBILE */
   @media (max-width: 720px) {
-    .hero h1 {
-      font-size: 34px;
+    .hero {
+      min-height: 540px;
+    }
+
+    .hero-inner {
+      padding-top: 110px;
+      padding-bottom: 44px;
     }
 
     .photos {
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
 
     .photo-mid {
@@ -339,6 +292,7 @@ import Layout from '../layouts/Layout.astro';
 
     .how {
       grid-template-columns: 1fr;
+      gap: 40px;
     }
   }
 </style>
