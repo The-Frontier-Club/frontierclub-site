@@ -1,30 +1,10 @@
 ---
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/calendar/', label: 'Trip Calendar' },
-  { href: '/about/', label: 'About' },
-  { href: '/contact/', label: 'Contact' },
-];
-const current = Astro.url.pathname;
 ---
 
 <header class="site-header">
   <div class="container nav-inner">
     <a href="/" class="wordmark">Frontier Club</a>
-    <nav aria-label="Main navigation">
-      <ul>
-        {links.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              aria-current={current === link.href ? 'page' : undefined}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <a href="#waitlist" class="nav-cta">Join the waitlist</a>
   </div>
 </header>
 
@@ -33,7 +13,7 @@ const current = Astro.url.pathname;
     position: sticky;
     top: 0;
     z-index: 10;
-    background: var(--color-bg);
+    background: var(--color-black);
     border-bottom: 1px solid var(--color-line);
   }
 
@@ -42,48 +22,33 @@ const current = Astro.url.pathname;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-    padding-top: 20px;
-    padding-bottom: 20px;
-    flex-wrap: wrap;
+    padding-top: 18px;
+    padding-bottom: 18px;
   }
 
   .wordmark {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--color-accent);
+    font-size: 24px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-lime);
   }
 
-  ul {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-wrap: wrap;
-  }
-
-  nav a {
-    font-size: 14px;
+  .nav-cta {
+    font-size: 13px;
     font-weight: 600;
-    color: var(--color-nav-link);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-lime);
   }
 
-  nav a:hover {
-    color: var(--color-pink);
-  }
-
-  nav a[aria-current='page'] {
-    color: var(--color-ink);
+  .nav-cta:hover {
+    color: var(--color-off);
   }
 
   @media (max-width: 720px) {
-    ul {
-      gap: 18px;
-    }
-
-    nav a {
-      font-size: 13px;
+    .nav-cta {
+      font-size: 12px;
     }
   }
 </style>
