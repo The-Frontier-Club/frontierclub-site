@@ -10,6 +10,8 @@ export const trip = {
   groupSize: 'Max 12 travelers', // TODO: confirm real group size
   price: '$4,750 USD',
   showPrice: false, // Pricing-visibility decision is still open (see earlier notes)
-  overview:
-    "11 days. Two countries. No stone left unturned.\n\nLet's discover Cape Town and Zimbabwe together on an action-fuelled journey designed to challenge your perspective on what adventurous travel can truly be. Expect cold-water plunges, real safari and at least one moment that will make you miss home. Not a holiday. An adventure for those ready to step outside their comfort zone, with the small-group energy that turns strangers into people you'd travel with again.",
-};
+overview: `11 days. Two countries. No stone left unturned.
+
+Let's discover Cape Town and Zimbabwe together on an action-fuelled journey designed to challenge your perspective on what adventurous travel can truly be.
+
+Expect cold-water plunges, real safari and at least one moment that will make you miss home. Not a holiday. An adventure for those ready to step outside their comfort zone, with the small-group energy that turns strangers into people you'd travel with again.`
