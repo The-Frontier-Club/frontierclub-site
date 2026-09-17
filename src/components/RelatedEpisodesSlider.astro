@@ -1,0 +1,143 @@
+---
+// RelatedEpisodesSlider.astro — replaces the Webflow w-slider on the episode
+// detail page with a Swiper carousel. Keeps the source Client-First slide
+// classes (.slide-item / .card_item / .card_portfolio / .portfolio_img) and
+// adds Swiper classes (.swiper / .swiper-wrapper / .swiper-slide) in parallel.
+// Arrows live in their own row (not .w-slider-arrow-*) to avoid the source
+// arrow positioning quirk.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  episodes: CollectionEntry<'episodes'>[];
+}
+
+const { episodes } = Astro.props;
+---
+<div class="related_swiper" data-reveal>
+  <div class="slider-mask is-full swiper">
+    <div class="swiper-wrapper">
+      {episodes.map((ep) => (
+        <div class="slide-item border_left swiper-slide">
+          <div class="card_item">
+            <div class="card_portfolio w-variant-aeddb56b-075d-3576-2ce2-f78825038a58">
+              <div class="content_text">
+                <a href={`/episodes/${ep.id}`} class="content_top w-inline-block">
+                  <div class="w-layout-hflex">
+                    <div class="h6">{ep.data.name}</div>
+                  </div>
+                  <div class="text-color-secondary text-style-2lines">{ep.data.shortDescription}</div>
+                </a>
+                <div>
+                  <a href={`/episodes/${ep.id}`} class="play_link w-inline-block">
+                    <div class="play_wrap">
+                      <div class="text-decorate">[</div>
+                      <div class="link_text-wrap">
+                        <div class="text_link_tag">View more</div>
+                        <div class="text_link_tag is-absolute">View more</div>
+                      </div>
+                      <div class="text-decorate">]</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <a href={`/episodes/${ep.id}`} class="portfolio_img w-variant-aeddb56b-075d-3576-2ce2-f78825038a58 w-inline-block">
+                <div class="view_wrap">
+                  <div class="view_button">
+                    <div>View More</div>
+                  </div>
+                </div>
+                <img src={ep.data.thumbnail} alt={ep.data.name} loading="lazy" class="img" />
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="related_arrows">
+    <div class="arrow" data-prev role="button" tabindex="0" aria-label="Previous episode">
+      <img src="/images/dashicons_arrow-up.svg" loading="lazy" alt="" class="icon-1x1-medium" />
+    </div>
+    <div class="arrow is-right" data-next role="button" tabindex="0" aria-label="Next episode">
+      <img src="/images/dashicons_arrow-up-1.svg" loading="lazy" alt="" class="icon-1x1-medium" />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Surgical Swiper overrides: full-width mask, visible overflow for peek,
+     arrows on their own centered row (override the source arrow translate). */
+  .related_swiper .slider-mask.swiper {
+    width: 100% !important;
+    overflow: visible !important;
+  }
+  /* Arrows sit at the bottom-left, right under the slides — matching the source
+     slider (prev + next in a row below the cards), part of the slider block. */
+  .related_arrows {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    width: 100%;
+  }
+  /* Neutralize the source's slider-arrow positioning: `.arrow.is-right` is
+     `position:absolute; inset:auto auto 0 2.5rem`, which escaped to the
+     position:relative .section_hero and floated a stray box over the hero.
+     In our custom arrow row both arrows sit normally in the flex flow. */
+  .related_arrows .arrow {
+    position: relative;
+    inset: auto;
+    margin: 0;
+    transform: none;
+  }
+  .related_arrows .arrow:hover {
+    transform: scale(0.97);
+  }
+  .related_arrows .arrow[aria-disabled='true'],
+  .related_arrows .arrow.swiper-button-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  @media (max-width: 767px) {
+    .related_swiper {
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      width: 100vw;
+    }
+    .related_arrows {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  import Swiper from 'swiper';
+  import { Navigation } from 'swiper/modules';
+  import 'swiper/css';
+
+  document.querySelectorAll<HTMLElement>('.related_swiper').forEach((root) => {
+    const mask = root.querySelector<HTMLElement>('.slider-mask.swiper');
+    if (!mask) return;
+    new Swiper(mask, {
+      modules: [Navigation],
+      // Source w-slider: data-autoplay="false" → no autoplay; user wants no loop
+      // either, so it's a plain manual slider (prev/next, disabled at the ends).
+      loop: false,
+      speed: 500, // source data-duration="500"
+      spaceBetween: 16,
+      centeredSlides: false,
+      // slides visible: portrait 1, landscape & tablet 1.5, desktop 2.
+      slidesPerView: 1,
+      breakpoints: {
+        480: { slidesPerView: 1.5, spaceBetween: 24 }, // landscape + tablet
+        992: { slidesPerView: 2, spaceBetween: 24 },   // desktop
+      },
+      navigation: {
+        nextEl: root.querySelector<HTMLElement>('[data-next]'),
+        prevEl: root.querySelector<HTMLElement>('[data-prev]'),
+      },
+    });
+  });
+</script>

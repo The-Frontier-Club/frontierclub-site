@@ -1,0 +1,128 @@
+---
+// RelatedBlogsSlider.astro — "Article of the Week" related posts carousel for
+// /blog/[slug]. Replaces the source Webflow `w-slider` (section_latest) with
+// Swiper 11, mirroring the (approved) RelatedEpisodesSlider:
+//   - source data-autoplay="false" → no autoplay; no loop (manual slider).
+//   - prev/next arrows in a bottom-left row, disabled at the ends.
+//   - slidesPerView: portrait 1, landscape & tablet 1.5, desktop 2.
+//   - card image gets the source's filter: contrast(70%).
+// CLICKABILITY (owner decision 2026-06-16, source-faithful): like the blog list
+// card, the WHOLE card is one link — source wraps it in <a class="article_card">
+// and "Read more" is decorative text (a <div>), not a nested link. Kept in sync
+// with BlogsSection so both `article_card` uses behave identically.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blogs'>[];
+}
+const { posts } = Astro.props;
+---
+<div data-reveal class="related_swiper related-blogs-swiper">
+  <div class="slider-mask is-full swiper">
+    <div class="swiper-wrapper">
+      {posts.map((post) => (
+        <div class="slide-item swiper-slide">
+          <a href={`/blog/${post.id}`} class="article_card w-inline-block">
+            <div class="article_img">
+              <img style="filter:contrast(70%)" src={post.data.thumbnail} alt={post.data.name} loading="lazy" class="img">
+            </div>
+            <div class="article_content">
+              <div class="text-4xl text-style-2lines">{post.data.name}</div>
+              <div class="text-color-secondary text-style-2lines">{post.data.shortDescription}</div>
+              <div class="play_link is-second">
+                <div class="play_wrap">
+                  <div class="text-decorate">[</div>
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">Read more</div>
+                    <div class="text_link_tag is-absolute">Read more</div>
+                  </div>
+                  <div class="text-decorate">]</div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="related_arrows">
+    <div class="arrow" data-prev role="button" tabindex="0" aria-label="Previous article">
+      <img src="/images/dashicons_arrow-up.svg" loading="lazy" alt="" class="icon-1x1-medium" />
+    </div>
+    <div class="arrow is-right" data-next role="button" tabindex="0" aria-label="Next article">
+      <img src="/images/dashicons_arrow-up-1.svg" loading="lazy" alt="" class="icon-1x1-medium" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .related_swiper .slider-mask.swiper {
+    width: 100% !important;
+    overflow: visible !important;
+  }
+  /* Arrows at the bottom-left, right under the slides — part of the slider. */
+  .related_arrows {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    width: 100%;
+  }
+  /* Neutralize the source `.arrow.is-right` absolute positioning so both arrows
+     sit normally in the flex row (otherwise it floats off the section). */
+  .related_arrows .arrow {
+    position: relative;
+    inset: auto;
+    margin: 0;
+    transform: none;
+  }
+  .related_arrows .arrow:hover {
+    transform: scale(0.97);
+  }
+  .related_arrows .arrow[aria-disabled='true'],
+  .related_arrows .arrow.swiper-button-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  @media (max-width: 767px) {
+    .related_swiper {
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      width: 100vw;
+    }
+    .related_arrows {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  import Swiper from 'swiper';
+  import { Navigation } from 'swiper/modules';
+  import 'swiper/css';
+
+  document.querySelectorAll<HTMLElement>('.related-blogs-swiper').forEach((root) => {
+    const mask = root.querySelector<HTMLElement>('.slider-mask.swiper');
+    if (!mask) return;
+    new Swiper(mask, {
+      modules: [Navigation],
+      // source data-autoplay="false" → no autoplay; manual slider, no loop.
+      loop: false,
+      speed: 500, // source data-duration="500"
+      spaceBetween: 16,
+      centeredSlides: false,
+      // slides visible: portrait 1, landscape & tablet 1.5, desktop 2.
+      slidesPerView: 1,
+      breakpoints: {
+        480: { slidesPerView: 1.5, spaceBetween: 24 },
+        992: { slidesPerView: 2, spaceBetween: 24 },
+      },
+      navigation: {
+        nextEl: root.querySelector<HTMLElement>('[data-next]'),
+        prevEl: root.querySelector<HTMLElement>('[data-prev]'),
+      },
+    });
+  });
+</script>

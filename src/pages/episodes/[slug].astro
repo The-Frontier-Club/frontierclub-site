@@ -1,0 +1,209 @@
+---
+// /episodes/[slug] — Episode detail (from detail_episodes.html).
+// Source order: hero (tag/title/author + photo + listen-on links) ->
+// section_loop -> about-host -> related episodes (w-slider -> Swiper) ->
+// section_stories -> section_frequency -> footer.
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import LoopSection from '../../components/LoopSection.astro';
+import StoriesSection from '../../components/StoriesSection.astro';
+import FrequencySection from '../../components/FrequencySection.astro';
+import RelatedEpisodesSlider from '../../components/RelatedEpisodesSlider.astro';
+
+export const getStaticPaths = (async () => {
+  const episodes = await getCollection('episodes');
+  return episodes.map((ep) => ({
+    params: { slug: ep.id },
+    props: { ep },
+  }));
+}) satisfies GetStaticPaths;
+
+const { ep } = Astro.props;
+const d = ep.data;
+
+const allEpisodes = (await getCollection('episodes')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const related = allEpisodes.filter((e) => e.id !== ep.id);
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/#founders', label: 'The Founders' },
+  { href: '/episodes', label: 'Trips' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact Us' },
+];
+
+const APPLY_URL = 'https://form.typeform.com/to/Cs6etR3o';
+
+// Hero shows the trip's thumbnail (the `thumbnail` CMS field) — the SAME
+// asset as the card/showcase, so the detail's main image matches the card.
+const heroImage = d.thumbnail || d.image;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: d.name,
+  description: d.shortDescription,
+  image: d.thumbnail,
+  ...(d.destination && { touristType: d.destination }),
+};
+---
+<BaseLayout
+  title={`${d.name} — Mission 200`}
+  description={d.shortDescription || `${d.name}, a trip with Mission 200.`}
+  image={d.thumbnail}
+  ogType="article"
+  schema={schema}
+>
+  <Navbar navLinks={navLinks} logoSrc="/images/Lyria-3.svg" brand="Lyria" />
+
+  <main class="main-wrapper">
+    <!-- HERO -->
+    <section class="section_hero">
+      <div class="padding-global">
+        <div class="hero_container">
+          <div class="w-layout-vflex content_top">
+            <div data-reveal="left">
+              <div class="tag">
+                <div class="text_tag">Trip</div>
+              </div>
+            </div>
+            <h1 data-reveal="left" data-reveal-delay="100" class="hero_title h2_clamp">{d.name}</h1>
+            <div data-reveal="left" data-reveal-delay="200" class="listener_content">
+              <div>{d.destination}</div>
+              {d.dates && <div class="icon_menu"></div>}
+              <div>{d.dates}</div>
+            </div>
+          </div>
+          <div class="spacer">
+            <div style="height:4rem" class="spacer-desktop"></div>
+            <div style="height:3rem" class="spacer-tablet"></div>
+            <div style="height:2rem" class="spacer-mobile"></div>
+          </div>
+          <div class="home_hero-img is-second"><img src={heroImage} alt={d.name} loading="eager" fetchpriority="high" decoding="async" class="img-parallax"></div>
+          <div class="spacer">
+            <div style="height:4rem" class="spacer-desktop"></div>
+            <div style="height:3rem" class="spacer-tablet"></div>
+            <div style="height:2rem" class="spacer-mobile"></div>
+          </div>
+          <div class="plataform_wrap">
+            <div>
+              <a href={APPLY_URL} target="_blank" rel="noopener" class="play_link w-inline-block">
+                <div class="play_wrap">
+                  <div class="text-decorate">[</div>
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">apply for this trip</div>
+                    <div class="text_link_tag is-absolute">apply for this trip</div>
+                  </div>
+                  <div class="text-decorate">]</div>
+                </div>
+              </a>
+            </div>
+            {d.groupSize && (
+              <div>
+                <div class="play_link">
+                  <div class="play_wrap">
+                    <div class="text-decorate">[</div>
+                    <div class="link_text-wrap">
+                      <div class="text_link_tag">{d.groupSize}</div>
+                    </div>
+                    <div class="text-decorate">]</div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {d.showPrice && d.price && (
+              <div>
+                <div class="play_link">
+                  <div class="play_wrap">
+                    <div class="text-decorate">[</div>
+                    <div class="link_text-wrap">
+                      <div class="text_link_tag">{d.price}</div>
+                    </div>
+                    <div class="text-decorate">]</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <LoopSection isLoop />
+
+    <!-- ABOUT YOUR HOST (static host bio, animation="highlight") -->
+    <section>
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="about_grid">
+            <div data-reveal="left" class="about_content">
+              <div class="tag">
+                <div class="text_tag">About your host</div>
+              </div>
+            </div>
+            <div class="content_right">
+              <div data-reveal="right" animation="highlight" class="max-description is_26rem-copy">
+                <h2 class="h2_clamp is-second">After 10 years coaching podcasters and musicians, he’s still nerding out about how sound connects us. A former NPR producer, he now blends investigative journalism with cinematic sound design, creating podcasts that linger like a half-remembered melody. </h2>
+              </div>
+              <div class="w-layout-vflex about_visual-flex">
+                <div data-reveal="right" data-reveal-delay="100" class="about_content_img"><img src="/images/Frame-9.avif" loading="lazy" sizes="(max-width: 786px) 100vw, 786px" srcset="/images/Frame-9-p-500.avif 500w, /images/Frame-9.avif 786w" alt="" class="img"></div>
+                <div data-reveal="right" data-reveal-delay="200" class="learn_more-tag">
+                  <div>
+                    <a href="/about" class="play_link w-inline-block">
+                      <div class="play_wrap">
+                        <div class="text-decorate">[</div>
+                        <div class="link_text-wrap">
+                          <div class="text_link_tag">learn more</div>
+                          <div class="text_link_tag is-absolute">learn more</div>
+                        </div>
+                        <div class="text-decorate">]</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <!-- RELATED EPISODES (w-slider -> Swiper) -->
+    <section class="section_portfolio">
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="w-layout-vflex content_top">
+            <div data-reveal="left">
+              <div class="tag">
+                <div class="text_tag">Portfolio</div>
+              </div>
+            </div>
+            <h2 data-reveal="left" data-reveal-delay="100" class="h2_clamp">Latest Episodes Showcase</h2>
+            <div data-reveal="left" data-reveal-delay="200" class="text-color-secondary">Discover captivating stories and insights.</div>
+          </div>
+          <div class="spacer">
+            <div style="height:4rem" class="spacer-desktop"></div>
+            <div style="height:3rem" class="spacer-tablet"></div>
+            <div style="height:2rem" class="spacer-mobile"></div>
+          </div>
+          <RelatedEpisodesSlider episodes={related} />
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <StoriesSection quote2Delay={200} />
+    <FrequencySection />
+  </main>
+
+  <Footer />
+</BaseLayout>

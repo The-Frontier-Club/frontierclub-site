@@ -1,0 +1,117 @@
+---
+// /contact — from contact/contact-v-1.html: hero (tag/title/description + form)
+// · section_loop · footer. Form is a STUB: a tiny inline script prevents the
+// real submit and reveals the `.w-form-done` success state. No backend.
+// (Source form was method="get" which would reload the page — we override it.)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import LoopSection from '../components/LoopSection.astro';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/episodes', label: 'Episodes' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact Us' },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  url: new URL('/contact', Astro.site).toString(),
+  name: 'Contact Lyria',
+  description:
+    "Whether you're launching your first podcast, looking to collaborate, or just have a question — we're here to help.",
+  about: { '@type': 'Organization', name: 'Lyria' },
+};
+---
+<BaseLayout
+  title="Contact — Lyria"
+  description="Whether you're launching your first podcast, looking to collaborate, or just have a question — we're here to help."
+  schema={schema}
+>
+  <Navbar navLinks={navLinks} logoSrc="/images/Lyria-3.svg" brand="Lyria" />
+
+  <main class="main-wrapper">
+    <section class="section_hero">
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="hero_container">
+            <div class="flex_four-gap">
+              <div class="w-layout-vflex hero_content_left-wrap">
+                <div class="content_top">
+                  <div data-reveal="left">
+                    <div class="tag">
+                      <div class="text_tag">Contact us</div>
+                    </div>
+                  </div>
+                  <h1 data-reveal="left" data-reveal-delay="100" class="h1_hero">We are hear your thought</h1>
+                  <div data-reveal="left" data-reveal-delay="200" class="text-color-secondary">Whether you're launching your first podcast, looking to collaborate, or just have a question — we're here to help. Reach out and let’s start a conversation.</div>
+                </div>
+              </div>
+              <div class="form_component w-form">
+                <form id="wf-form-Form" name="wf-form-Form" data-name="Form" class="form_form" novalidate>
+                  <div data-reveal="left" data-reveal-delay="100" class="form_field-wrapper">
+                    <label for="Full-Name" class="form_label">Full name</label>
+                    <input class="form_input w-input" maxlength="256" name="Full-Name" data-name="Full Name" placeholder="YOUR FULL NAME" type="text" id="Full-Name">
+                  </div>
+                  <div data-reveal="left" data-reveal-delay="200" class="form_field-wrapper">
+                    <label for="Email" class="form_label">Email address</label>
+                    <input class="form_input w-input" maxlength="256" name="Email" data-name="Email" placeholder="Your email" type="email" id="Email" required>
+                  </div>
+                  <div data-reveal="left" data-reveal-delay="300" class="form_field-wrapper">
+                    <label for="Message-3" class="form_label">messages</label>
+                    <textarea id="Message-3" name="Message" maxlength="5000" data-name="Message" placeholder="Your messages" class="form_input w-input"></textarea>
+                  </div>
+                  <button type="submit" data-reveal="left" data-reveal-delay="400" class="button_submit">
+                    <div class="play_wrap">
+                      <div class="text-decorate">[</div>
+                      <div class="link_text-wrap">
+                        <div class="text_link_tag">Send a message</div>
+                        <div class="text_link_tag is-absolute">Send a message</div>
+                      </div>
+                      <div class="text-decorate">]</div>
+                    </div>
+                  </button>
+                </form>
+                <div class="form_message-success w-form-done">
+                  <div>Thank you! Your submission has been received!</div>
+                </div>
+                <div class="form_message-error w-form-fail">
+                  <div>Oops! Something went wrong while submitting the form.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <LoopSection />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Form STUB: validate natively, then reveal the .w-form-done success state.
+  // No backend — wiring a real provider is documented in CUSTOMIZE.md.
+  document.querySelectorAll<HTMLFormElement>('.form_component .form_form').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const wrap = form.closest('.w-form');
+      const done = wrap?.querySelector<HTMLElement>('.w-form-done');
+      const fail = wrap?.querySelector<HTMLElement>('.w-form-fail');
+      if (fail) fail.style.display = 'none';
+      form.style.display = 'none';
+      if (done) done.style.display = 'block';
+      form.reset();
+    });
+  });
+</script>

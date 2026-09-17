@@ -1,0 +1,96 @@
+---
+// Footer.astro — from the Lyria source footer.
+// Variant quick-links collapsed to real routes. Seller marketing links KEPT
+// (Rule 42). Giant LYRIA wordmark marquee kept (CSS marquee, .footer_track).
+// IX initial states stripped.
+
+// Few real routes → split into two "Quick links" groups so the footer fills
+// the source's 4-column grid (logo + 2 quick-link columns + Temlis).
+// One-pager: internal items are same-page anchors, Apply is the one
+// external link (per Rule: only outward link goes to the application form).
+const quickLinksA = [
+  { href: '/', label: 'Home' },
+  { href: '#founders', label: 'The founders' },
+  { href: '#trip', label: 'The trip' },
+];
+
+const quickLinksB = [
+  { href: 'https://form.typeform.com/to/Cs6etR3o', label: 'Apply', external: true },
+];
+
+const sellerLinks = [
+  { href: 'https://www.skool.com/temlis/about', label: 'Join our community' },
+];
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/');
+
+// Copyright year — resolved at build time so each deploy shows the current year.
+const year = new Date().getFullYear();
+---
+<section class="footer">
+  <div class="padding-section-medium"></div>
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="footer_layout">
+        <a href="/" aria-label="The Frontier Club, home" data-reveal="bottom" data-reveal-delay="100" class="footer_logo w-inline-block"><img src="/images/frontier-club-logo.png" loading="lazy" alt="The Frontier Club" class="img"></a>
+        <div data-reveal="bottom" data-reveal-delay="100" class="footer_links">
+          <div class="footer_column">
+            {quickLinksA.map((link) => (
+              <a href={link.href} class={`footer_link w-inline-block${isCurrent(link.href) ? ' w--current' : ''}`}>
+                <div class="play_link">
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">{link.label}</div>
+                    <div class="text_link_tag is-absolute">{link.label}</div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div data-reveal="bottom" data-reveal-delay="200" class="footer_links">
+          <div class="footer_column">
+            {quickLinksB.map((link) => (
+              <a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener' : undefined} class={`footer_link w-inline-block${isCurrent(link.href) ? ' w--current' : ''}`}>
+                <div class="play_link">
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">{link.label}</div>
+                    <div class="text_link_tag is-absolute">{link.label}</div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div data-reveal="bottom" data-reveal-delay="300" class="footer_links">
+          <div class="footer_column">
+            {sellerLinks.map((link) => (
+              <a href={link.href} target="_blank" rel="noopener" class="footer_link w-inline-block">
+                <div class="play_link">
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">{link.label}</div>
+                    <div class="text_link_tag is-absolute">{link.label}</div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="spacer">
+        <div style="height:4rem" class="spacer-desktop"></div>
+        <div style="height:3.5rem" class="spacer-tablet"></div>
+        <div style="height:2rem" class="spacer-mobile"></div>
+      </div>
+      <div data-reveal="left" data-reveal-delay="150" class="footer_bottom-row">
+        <div class="text-color-secondary">© {year} The Frontier Club. All rights reserved.</div>
+        <a href="/privacy" class="text-color-secondary footer_privacy-link">Privacy policy</a>
+      </div>
+      <div class="spacer">
+        <div style="height:1.5rem" class="spacer-desktop"></div>
+        <div style="height:1.25rem" class="spacer-tablet"></div>
+        <div style="height:1rem" class="spacer-mobile"></div>
+      </div>
+    </div>
+  </div>
+</section>

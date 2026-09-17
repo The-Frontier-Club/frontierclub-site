@@ -1,0 +1,82 @@
+---
+// LatestSection.astro — "Fresh on the air" (section_latest), CMS Episodes.
+// Mirrors the source w-dyn-list: one .card_latest-item per episode.
+import { getCollection } from 'astro:content';
+
+const episodes = (await getCollection('episodes')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+<section class="section_latest">
+  <div class="padding-section-medium"></div>
+  <div class="padding-global">
+    <div class="container-medium">
+      <div class="flex_vertical">
+        <div class="w-layout-vflex content_top">
+          <div>
+            <div class="tag">
+              <div class="text_tag">Now open</div>
+            </div>
+          </div>
+          <h2 class="h2_clamp">Applications closing soon</h2>
+          <div class="text-color-secondary">A handful of spots left across this year's trips. Reviewed by hand, not first-come-first-served — tell us why you'd be a good fit.</div>
+        </div>
+        <div class="cards_container">
+          <div class="card_wrapp">
+            <div role="list" class="card_list">
+              {episodes.map((ep) => (
+                <div role="listitem" class="card_latest-item">
+                  <div class="card_border">
+                    <div class="relative">
+                      <div class="number_tag">
+                        <div class="text-color-subtle">{ep.data.number}</div>
+                      </div>
+                      <div class="card_img"><img src={ep.data.image} loading="lazy" alt={ep.data.name} class="img"></div>
+                    </div>
+                    <div class="card_content">
+                      <div class="w-layout-hflex title">
+                        <div class="padding-right hide-mobile-landscape">
+                          <div class="h6">{ep.data.author}</div>
+                        </div>
+                        <div class="h6">{ep.data.name}</div>
+                      </div>
+                      <div class="w-layout-hflex content_bottom">
+                        <div>
+                          <a href={ep.data.spotify || ep.data.youtube || `/episodes/${ep.id}`} class="play_link w-inline-block"><img src="/images/lets-icons_play-fill.svg" loading="lazy" alt="" class="icon-1x1-medium">
+                            <div class="play_wrap">
+                              <div class="text-decorate">[</div>
+                              <div class="link_text-wrap">
+                                <div class="text_link_tag">Play</div>
+                                <div class="text_link_tag is-absolute">Play</div>
+                              </div>
+                              <div class="text-decorate">]</div>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="text-color-secondary">
+                          <div>
+                            <a href={`/episodes/${ep.id}`} class="play_link w-inline-block">
+                              <div class="play_wrap">
+                                <div class="text-decorate">[</div>
+                                <div class="link_text-wrap">
+                                  <div class="text_link_tag">Download </div>
+                                  <div class="text_link_tag is-absolute">Download </div>
+                                </div>
+                                <div class="text-decorate">]</div>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="padding-section-medium"></div>
+</section>

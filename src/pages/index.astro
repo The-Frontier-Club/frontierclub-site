@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import LoopSection from '../components/LoopSection.astro';
+import StoriesSection from '../components/StoriesSection.astro';
+import FrequencySection from '../components/FrequencySection.astro';
+import { getCollection } from 'astro:content';
+import { trip } from '../lib/trip';
+
+const highlights = (await getCollection('highlights')).sort((a, b) => a.data.order - b.data.order);
+
+const APPLY_URL = 'https://form.typeform.com/to/Cs6etR3o';
+---
+<BaseLayout
+  title="The Frontier Club — Join the Founding 200"
+  description="The Frontier Club: a founding community of 200 members. Small-group, application-only trips built around the kind of travel that actually changes you. Founded by Harry Jaggard and Kieran Brown."
+>
+  <Navbar logoSrc="/images/frontier-club-logo.png" brand="The Frontier Club" applyHref={APPLY_URL} />
+
+  <main class="main-wrapper">
+    <!-- HERO -->
+    <section class="section_hero">
+      <div class="container-full">
+        <div class="hero_canvas">
+          <div animation="home-img" class="hero_header-img"><video src="/videos/tfc-hero-video-compressed.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true" class="img"></video></div>
+          <div animation="home-text" class="hero_wordmark">
+            <div class="hero_headline-main">if you want a piña colada on a sunbed</div>
+            <div class="hero_headline-sub font-secondary">this isn't for you</div>
+          </div>
+          <div class="hero_bottom">
+            <div class="padding-global">
+              <div animation="text-bottom" class="hero_grid">
+                <div animation="text-description" class="max-description is-26rem">
+                  <div>Not another group travel company. A community for people who are seeking more. Group travel with a focus on deeper connection, adventurous destinations and truly transformational experiences.</div>
+                </div>
+              </div>
+              <div class="padding-top"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOUNDERS -->
+    <section id="founders" animation="" class="section_about anchor-section">
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="about_wrap">
+            <div class="about_header">
+              <div data-reveal="left">
+                <div class="tag">
+                  <div class="text_tag">Built by travellers, for travellers.</div>
+                </div>
+              </div>
+              <div class="about_content">
+                <div class="max-title is-50rem">
+                  <h2 data-reveal="right" class="h2_about">&quot;This isn't for everyone, but that's the point. We believe travel is about taking a step outside your comfort zone.</h2>
+                </div>
+                <div class="text_rigth">
+                  <h2 data-reveal="right" data-reveal-delay="100" class="h2_about">We want to take you on the journeys we've been lucky to have and give people the confidence to feel their fear and do it anyway.&quot;</h2>
+                  <h2 class="h2_about founders-signature">- Harry &amp; Kieran</h2>
+                </div>
+              </div>
+            </div>
+            <div class="about_images">
+              <div data-reveal="left" class="about_card">
+                <div class="text_card">110</div>
+                <div class="about_card-caption">countries explored</div>
+              </div>
+              <div data-reveal="bottom" class="about_center">
+                <div class="about_img is-one"><img src="/images/founder-tribal.jpg" loading="lazy" alt="A Frontier Club founder in traditional Huli headdress, Papua New Guinea" class="img"></div>
+              </div>
+              <div data-reveal="right" class="about_img is-second"><img src="/images/founder-desert.jpg" loading="lazy" alt="A Frontier Club founder in the Sahara desert" class="img"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <LoopSection />
+
+    <!-- THE TRIP -->
+    <section id="trip" class="section_about anchor-section">
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="w-layout-vflex content_top">
+            <div data-reveal="left">
+              <div class="label-weird-horses font-secondary">our trip</div>
+            </div>
+            <h2 data-reveal="left" data-reveal-delay="100" class="h2_clamp">
+              {trip.name.split(' & ')[0]}<br />
+              &amp; {trip.name.split(' & ')[1]}
+            </h2>
+            <div data-reveal="left" data-reveal-delay="150">
+              <div class="tag">
+                <div class="text_tag">{trip.dates} | {trip.price}</div>
+              </div>
+            </div>
+            <div data-reveal="left" data-reveal-delay="200" class="text-color-secondary max-description is-26rem">
+              {trip.overview.split('\n\n').map((paragraph, i) => (
+                <p style={i > 0 ? 'margin-top: 1rem;' : undefined}>{paragraph}</p>
+              ))}
+            </div>
+            {trip.showPrice && trip.price && (
+              <div data-reveal="left" data-reveal-delay="300" class="text-color-secondary">{trip.price} &middot; {trip.groupSize}</div>
+            )}
+          </div>
+          <div class="spacer">
+            <div style="height:4rem" class="spacer-desktop"></div>
+            <div style="height:3rem" class="spacer-tablet"></div>
+            <div style="height:2rem" class="spacer-mobile"></div>
+          </div>
+          <div class="highlight-grid">
+            {highlights.map((h, i) => (
+              <div data-reveal="bottom" data-reveal-delay={i * 100} class="highlight-card">
+                {h.data.image && <img src={h.data.image} alt="" loading="lazy" class="highlight-card_img" />}
+                <div class="highlight-card_body">
+                  <div class="h6">{h.data.name}</div>
+                  <div class="text-color-secondary">{h.data.description}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="spacer">
+            <div style="height:2.5rem" class="spacer-desktop"></div>
+            <div style="height:2rem" class="spacer-tablet"></div>
+            <div style="height:1.5rem" class="spacer-mobile"></div>
+          </div>
+          <div class="trip_below-grid-row">
+            <div animation="item">
+              <a href="https://indd.adobe.com/view/83dfcaa9-e9c2-440c-aba2-8555317cda21" target="_blank" rel="noopener" class="play_link w-inline-block">
+                <div class="play_wrap">
+                  <div class="text-decorate">[</div>
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">FULL ITINERARY</div>
+                    <div class="text_link_tag is-absolute">FULL ITINERARY</div>
+                  </div>
+                  <div class="text-decorate">]</div>
+                </div>
+              </a>
+            </div>
+            <div class="h6 trip_more">+more</div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <!-- APPLY BANNER -->
+    <section class="section_apply-banner">
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large apply-banner_inner">
+          <a href={APPLY_URL} target="_blank" rel="noopener" data-reveal="bottom" class="apply-banner_button"><span class="apply-banner_button-text">Apply now</span></a>
+          <div class="apply-banner_steps" data-reveal="bottom" data-reveal-delay="100">
+            <div class="apply-banner_step">
+              <div class="apply-banner_step-num">1</div>
+              <div class="apply-banner_step-text">Click "Apply Now" and complete the short Typeform, including a brief introduction video.</div>
+            </div>
+            <div class="apply-banner_step">
+              <div class="apply-banner_step-num">2</div>
+              <div class="apply-banner_step-text">We'll review your application and be in touch with the outcome.</div>
+            </div>
+            <div class="apply-banner_step">
+              <div class="apply-banner_step-num">3</div>
+              <div class="apply-banner_step-text">If you are a fit for this destination, a member of our partnered booking team, TruTravels, will reach out to get you started.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <StoriesSection
+      id="stories"
+      headlineDelay={100}
+      listenerDelay={100}
+      quote1Delay={100}
+      quote2Delay={200}
+      heading={null}
+      preLabel="mission 200"
+      showApplyButton
+      isTestimonial={true}
+      line1="We're kicking things off with Mission 200: a commitment to deliver truly transformational travel experiences to a founding community of 200 people, all chasing something bigger than a holiday."
+      line2="We're not filling seats. We're picking people who feel the same way we do."
+    />
+    <FrequencySection />
+  </main>
+
+  <Footer />
+</BaseLayout>

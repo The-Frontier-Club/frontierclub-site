@@ -1,0 +1,101 @@
+---
+// PortfolioSection.astro — "Latest Episodes Showcase" (section_portfolio).
+// CMS Episodes. The source uses 3 stacked sticky .latest_card lists, each
+// surfacing one episode. We map the first 3 episodes (by order) to the 3 cards.
+// Reused on /episodes too. IX hooks/initial transform states stripped.
+import { getCollection } from 'astro:content';
+
+interface Props {
+  /** Section heading. Default = home copy. */
+  heading?: string;
+  /** Tag label above heading. */
+  tag?: string;
+  /** Short description under heading. */
+  description?: string;
+  /** Heading element tag — use 'h1' when this is the page's main heading. */
+  headingTag?: 'h1' | 'h2';
+}
+
+const {
+  heading = 'Latest Episodes Showcase',
+  tag = 'Portfolio',
+  description = 'Discover captivating stories and insights.',
+  headingTag: Heading = 'h2',
+} = Astro.props;
+
+const episodes = (await getCollection('episodes')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+// Source shows 3 sticky cards on home (teaser) and 4 on the episodes page
+// (the full list). The 4th card carries no is-* modifier in the source.
+const isHero = Heading === 'h1';
+const cards = episodes.slice(0, isHero ? 4 : 3);
+const cardClass = ['is-one', 'is-two', 'is-three', ''];
+---
+<section class="section_portfolio">
+  <div class="padding-section-medium"></div>
+  {Heading === 'h1' && (
+    /* Page-hero spacing: source adds this extra spacer only when portfolio is
+       the first/hero section (episodes page), to clear the navbar. */
+    <div class="spacer">
+      <div style="height: 4.5rem" class="spacer-desktop"></div>
+      <div style="height: 3rem" class="spacer-tablet"></div>
+      <div style="height: 2rem" class="spacer-mobile"></div>
+    </div>
+  )}
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="flex_vertical">
+        <div class="w-layout-vflex content_top">
+          <div class="tag" data-reveal={isHero ? 'left' : undefined}>
+            <div class="text_tag">{tag}</div>
+          </div>
+          <Heading class="h2_clamp" data-reveal={isHero ? 'left' : undefined} data-reveal-delay={isHero ? 100 : undefined}>{heading}</Heading>
+          <div class="text-color-secondary" data-reveal={isHero ? 'left' : undefined} data-reveal-delay={isHero ? 200 : undefined}>{description}</div>
+        </div>
+        <div class="relative" data-rise-reveal={isHero ? '' : undefined}>
+          {cards.map((ep, i) => (
+            <div class={`latest_card ${cardClass[i]}`.trim()}>
+              <div role="list">
+                <div role="listitem">
+                  <div class="card_portfolio-item">
+                    <div class="card_portfolio">
+                      <div class="content_text">
+                        <div class="w-layout-vflex content_top">
+                          <div class="w-layout-hflex">
+                            <div class="h6">{ep.data.name}</div>
+                          </div>
+                          <div class="text-color-secondary text-style-2lines">{ep.data.shortDescription}</div>
+                        </div>
+                        <div>
+                          <a href={`/episodes/${ep.id}`} class="play_link w-inline-block">
+                            <div class="play_wrap">
+                              <div class="text-decorate">[</div>
+                              <div class="link_text-wrap">
+                                <div class="text_link_tag">View more</div>
+                                <div class="text_link_tag is-absolute">View more</div>
+                              </div>
+                              <div class="text-decorate">]</div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                      <a href={`/episodes/${ep.id}`} class="portfolio_img w-inline-block">
+                        <div class="view_wrap">
+                          <div class="view_button">
+                            <div>View More</div>
+                          </div>
+                        </div><img style="filter:contrast(70%)" src={ep.data.thumbnail} alt={ep.data.name} loading="lazy" class="img">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="padding-section-medium"></div>
+</section>

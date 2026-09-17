@@ -1,0 +1,63 @@
+---
+// /blog — blog listing. From blogs.html: hero (tag/title/description + the
+// blog card grid). Then FrequencySection + Footer (source had section_frequency
+// + footer below the hero on blogs.html).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import BlogsSection from '../../components/BlogsSection.astro';
+import FrequencySection from '../../components/FrequencySection.astro';
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/episodes', label: 'Episodes' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact Us' },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Lyria Blog',
+  description:
+    'Your backstage pass to the world of podcast creation — storytelling tips, audio trends, and behind-the-scenes glimpses of our process.',
+  url: new URL('/blog', Astro.site).toString(),
+  publisher: { '@type': 'Organization', name: 'Lyria' },
+};
+---
+<BaseLayout
+  title="Blog — Lyria"
+  description="Your backstage pass to the world of podcast creation — storytelling tips, audio trends, and behind-the-scenes glimpses of our process."
+  schema={schema}
+>
+  <Navbar navLinks={navLinks} logoSrc="/images/Lyria-3.svg" brand="Lyria" />
+
+  <main class="main-wrapper">
+    <section class="section_hero">
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="hero_container">
+            <div class="flex_four-gap">
+              <div class="w-layout-vflex vertical-center">
+                <div data-reveal="bottom" class="tag">
+                  <div class="text_tag">Latest</div>
+                </div>
+                <h1 data-reveal="bottom" data-reveal-delay="100" class="h2_clamp">Article for you</h1>
+                <div data-reveal="bottom" data-reveal-delay="200" class="max-description is-48rem">
+                  <div class="text-color-secondary">This blog is your backstage pass to the world of podcast creation — from storytelling tips and audio trends to behind-the-scenes glimpses of our process.</div>
+                </div>
+              </div>
+              <BlogsSection />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <FrequencySection />
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,670 @@
+/* Custom overrides + components not covered by the Webflow stylesheet. */
+
+/* --- Case treatment: only Anton SC / Weird Horses display type is uppercase ---
+   The merged stylesheet (webflow.css) forces `text-transform: uppercase` on
+   the whole <body>. That reads fine for the big Anton headlines but was also
+   shouting-caps-ing every bit of Inter body copy (tags, buttons, footer
+   links, paragraphs) regardless of how it was actually written. Reset it
+   site-wide, then reapply uppercase only to the elements that are genuinely
+   set in the display fonts (Anton SC via the h1-h6 tags / .h6 / .h1-big /
+   .text_loop / .plataform_name / the nav dropdown's big menu links, or Weird
+   Horses via .font-secondary). Everything else now shows in whatever case
+   it's actually written in the source. */
+body {
+  text-transform: none;
+}
+h1, h2, h3, h4, h5, h6,
+.h6,
+.h1-big,
+.font-secondary,
+.text_loop,
+.plataform_name,
+.nav_menu-link .text_link_tag {
+  text-transform: uppercase;
+}
+
+/* --- Inter text: white ---
+   Everything else on the page (tags, buttons/links, footer links, body
+   paragraphs/descriptions) was inheriting the lime accent color from body
+   by default. Set those specifically to white. Anton/Weird Horses headings
+   are untouched here — they keep the lime accent unless a specific instance
+   (like the hero headline) overrides it on its own. */
+.text_tag,
+.text_link_tag,
+.max-description,
+.text-color-secondary,
+.text-decorate {
+  color: var(--text-color--text-on-primary);
+}
+
+/* --- Tag treatment: kerning + case ---
+   .text_tag carries `letter-spacing: .16em` in the merged stylesheet — wide
+   tracking meant for a short all-caps eyebrow label. That much tracking
+   read as loose, uneven kerning on a full sentence, so it's tightened to
+   match the rest of the site's Inter body text. Tags are still meant to
+   read as all-caps labels though (the Founders tag, the trip dates), so
+   uppercase is reapplied explicitly here rather than left to the general
+   case-treatment rule above, which defaults Inter text to regular case. */
+.text_tag {
+  letter-spacing: var(--_typography---base--letter-spacing);
+  text-transform: uppercase;
+}
+
+/* --- Brand accent override ---
+   tokens.css sets --base--sky-blue and --base--blue-dark, but webflow.css
+   (merged source, do not edit) re-declares the same variables on :root and
+   loads after tokens.css, so it wins the cascade. Re-declaring them here
+   (components.css loads last, before anim.css) is the safe override point
+   per CLAUDE.md. --base--blue-dark drives the page background AND the dark
+   "on-lime" text/fill color (--text-color--text-subtle), so this one change
+   covers both the site background and the navy fills (e.g. the apply
+   banner button). */
+:root {
+  --base--sky-blue: #bbff50;
+  --base--blue-dark: #191919;
+}
+
+/* --- Secondary display font: Weird Horses ---
+   Self-hosted, not a Fontsource package. Use sparingly via .font-secondary
+   (or the --font-secondary variable directly) for specific accent moments —
+   not a wholesale swap of the heading font. */
+@font-face {
+  font-family: 'Weird Horses';
+  src: url('/fonts/TNSC-Weird-Horses.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --font-secondary: 'Weird Horses', var(--_typography---font-family--headers);
+}
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+/* --- Hero headline: two-line, two-font statement ---
+   Replaces the old "Mission 200" wordmark (single display font, tuned for a
+   short word/number at the .h1-big scale of 20rem-27rem). This is a full
+   sentence, so it runs at a much smaller clamp, wrapping across multiple
+   lines like normal text rather than bleeding off the viewport edges.
+   The second line (Weird Horses) sits pulled up into the first line's
+   line-box via a negative margin, so the two overlap rather than just
+   stacking — the "this isn't for you" rebuttal reads as layered underneath
+   the main statement, not as a separate line below it. */
+.hero_wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* The hero video sits in an absolutely-positioned layer (.hero_header-img,
+     inset:0). Positioned elements always paint above unpositioned in-flow
+     siblings in CSS, regardless of DOM order — so without its own position,
+     this text would render, but invisibly, behind the video. */
+  position: relative;
+  z-index: 1;
+  /* Soft shadow so the headline stays legible over whatever the video is
+     doing behind it, rather than a hard drop-shadow edge. */
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+}
+.hero_headline-main {
+  font-family: var(--_typography---font-family--headers);
+  font-size: clamp(2.25rem, 6vw, 5.5rem);
+  line-height: 1.05;
+  max-width: 60rem;
+  color: var(--text-color--text-on-primary);
+}
+.hero_headline-sub {
+  font-size: clamp(2.75rem, 7.5vw, 6rem);
+  line-height: 1;
+  margin-top: -0.2em;
+  position: relative;
+  z-index: 1;
+}
+/* Same soft shadow as the headline above, scoped to the hero's paragraph
+   specifically — .max-description is shared with the Trip section, which
+   sits on a solid dark background and doesn't need it. */
+.hero_bottom .max-description {
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* --- New logo sizing fixes ---
+   The uploaded logo (2457x394px, ~6.2:1 aspect ratio) is much wider/flatter
+   than the original SVG wordmarks this template was built around, so the
+   existing rules don't fit it correctly:
+   - .navbar_logo had NO width/height constraint at desktop size at all (the
+     old SVG's own intrinsic dimensions were already nav-sized) — this PNG's
+     real pixel size would render huge and overflow the navbar without one.
+   - .footer_logo's box (below) was sized for the old logo's proportions too,
+     with the same cover-cropping issue. */
+.navbar_logo {
+  max-height: 1.75rem;
+  width: auto;
+}
+/* .footer_logo's box (6.3rem x 3rem, ~2.1:1) was sized for the old logo's
+   proportions too — same object-fit: cover cropping issue as above, but
+   worse: the box is small enough that cover crops it down to an illegible
+   fragment ("RONTIER" only, mid-word). Widening the box to match this
+   logo's real ~6.2:1 aspect ratio fits it in full, not just avoids cropping. */
+.footer_logo {
+  width: 10rem;
+}
+.footer_logo .img {
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* --- "Stay in the know" heading: explicit left-align.
+   No rule was actually centering it (it's a block-level h2, default
+   text-align), but making it explicit here rather than relying on the
+   browser default. */
+.h2_frequency {
+  text-align: left;
+}
+
+/* --- Footer bottom row: copyright + Privacy Policy link ---
+   Plain flex row so the two sit side by side with a gap; wraps to two
+   lines on narrow screens rather than overflowing. */
+.footer_bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.25rem;
+}
+.footer_privacy-link {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.footer_privacy-link:hover {
+  color: var(--text-color--text-primary);
+}
+
+/* --- Privacy policy body copy: opt out of the site-wide uppercase/lime
+   treatment ---
+   There's no existing "readable long-form text" style in this template to
+   reuse — .text-rich-text/.w-richtext (used for blog/episode body copy too)
+   don't reset text-transform, so ALL body text inherits the global
+   `body { text-transform: uppercase; color: var(--text-color--text-primary) }`
+   rule. That's the right choice for punchy marketing headlines, wrong for a
+   legal document people need to actually read carefully. Scoped here to
+   .privacy-content only — not changed site-wide, since blog/episode copy
+   wasn't part of this task and shouldn't change without a separate look. */
+.privacy-content {
+  text-transform: none;
+}
+.privacy-content h3 {
+  font-family: var(--_typography---font-family--headers);
+  color: var(--text-color--text-primary);
+  font-size: 1.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.privacy-content p,
+.privacy-content li {
+  text-transform: none;
+  color: var(--text-color--text-on-primary);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+.privacy-content ul {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+/* --- Founders quote signature ---
+   "- Harry & Kieran", right-aligned under the quote it signs off, with a
+   gap standing in for the blank line that used to separate them when this
+   was still one block of text. */
+.founders-signature {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+/* --- Founders "110" stat card ---
+   The source .about_card is `flex-flow: row`, built for a number sitting
+   beside short label text — that put "countries explored" next to "110"
+   instead of underneath it. Stack them instead. */
+.about_card {
+  flex-flow: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  /* Establishes an inline-size query container so the caption below can
+     scale its font-size directly off this box's own width (cqi units),
+     rather than the viewport's. */
+  container-type: inline-size;
+}
+/* Small line under the big Anton number. Matches the number's own treatment
+   (Anton, the same dark "on-lime" ink) rather than the site's usual white
+   Inter body text, since it reads as a label on the stat itself. Sized in
+   `cqi` (container-width) units, tuned so "COUNTRIES EXPLORED" spans the
+   same width as "110" above it, and stays matched as the card resizes. */
+.about_card-caption {
+  font-family: var(--_typography---font-family--headers);
+  text-transform: uppercase;
+  color: var(--text-color--text-subtle);
+  font-size: 8.2cqi;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+/* Mobile portrait: matching "110"'s width on ONE line means shrinking
+   "countries explored" (18 characters vs. 3) down to an unreadably tiny
+   size. Let it wrap across two lines instead, at a fixed, legible size —
+   trading exact width-matching for something you can actually read. */
+@media screen and (max-width: 479px) {
+  .about_card-caption {
+    font-size: 1.35rem;
+    white-space: normal;
+  }
+  /* The tablet rule (below, ≤991px) pins this photo absolutely to the
+     bottom-left of the whole .about_images row so it "peeks" up next to a
+     short, single-line stat card. With the caption now wrapping to two
+     lines, the taller card collides with that fixed position. Drop the
+     overlay trick here and let the photo flow normally instead. */
+  .about_img.is-second {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    padding-top: 81%;
+  }
+}
+
+/* --- "Stay in the know" cards: mobile-only shrink ---
+   .plataform_name's clamp() bottoms out at 1.75rem — big enough that
+   "[ join the community ]" and "[ sign up for updates ]" wrap with just
+   the closing "]" stranded on its own line at phone widths. */
+@media screen and (max-width: 479px) {
+  .plataform_name {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- Gap between the "Dare to say yes" marquee and The Trip: mobile fix ---
+   The merged stylesheet's --_sizes---padding-section--medium token actually
+   goes back UP to 5rem at the ≤479px breakpoint, after shrinking to 3rem at
+   ≤767px — a step backwards, not a further reduction. That's what made this
+   specific gap (the Trip section's own opening spacer) balloon on phones.
+   Scoped to just this one spacer, not the token everywhere else it's used. */
+@media screen and (max-width: 479px) {
+  #trip > .padding-section-medium:first-child {
+    padding-top: 3rem;
+  }
+}
+
+/* --- Trip highlight cards ---
+   Deliberately NOT built on .card_latest-item / .play_link — those are
+   Webflow's *linking* card patterns (they carry hover/click affordances
+   that imply "go somewhere"). These cards show, they don't navigate. */
+.highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.5rem;
+}
+.highlight-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  /* NOT --bg-color--bg-secondary: that token is the same grey as
+     .text-color-secondary (the description text below), which made the
+     text invisible — same color on same color. Using a translucent white
+     tint over the dark page background instead, so the description
+     text's muted grey actually has something to contrast against. */
+  background: rgba(255, 255, 255, 0.05);
+}
+.highlight-card_img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+.highlight-card_body {
+  padding: 0 0.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* --- Small pre-heading label in Weird Horses ---
+   A handwritten aside above a section heading (Trip: "our trip"; Mission
+   200: "mission") rather than a formal Anton/Inter tag. */
+.label-weird-horses {
+  color: var(--text-color--text-on-primary);
+  font-size: 2.5rem;
+}
+
+/* --- Row below the highlight cards: [FULL ITINERARY] left, "+more" right. */
+.trip_below-grid-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* .h6 has no color of its own (inherits the page's lime default) — white
+   here specifically, per request. */
+.trip_more {
+  color: var(--text-color--text-on-primary);
+}
+
+/* --- Apply banner: full-bleed lime block between The Trip and Mission 200 ---
+   A clearly-blocked color section (same lime as "Stay in the know") holding
+   one large Anton button, so there's a hard mid-page conversion moment
+   right after someone's read what the trip actually is. */
+.section_apply-banner {
+  background-color: var(--bg-color--bg-primary);
+  /* Same dark ink used elsewhere on lime (e.g. "Stay in the know") — the
+     steps list below the button relies on inheriting this rather than
+     each line coloring itself. */
+  color: var(--text-color--text-subtle);
+}
+.apply-banner_inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+/* Same "circle rises from below, fills the box" hover as the Stay-in-the-know
+   cards (.card_media/.card-overlay) — same size ratio, position, easing and
+   duration, just inverted colors (lime circle instead of dark, so the dark
+   text stays readable once it rises) and clipped to the button's own box
+   instead of a whole card row. */
+.apply-banner_button {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--_typography---font-family--headers);
+  text-transform: uppercase;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: var(--base--sky-blue);
+  background-color: var(--base--blue-dark);
+  padding: 1.25rem 3.5rem;
+  text-align: center;
+  transition: color 0.4s ease;
+}
+.apply-banner_button::before {
+  content: '';
+  position: absolute;
+  left: -82px;
+  bottom: 0;
+  width: 200%;
+  height: 300%;
+  border-radius: 100%;
+  /* White, not the page's own lime — the card version's overlay swaps to
+     whatever contrasts with ITS section; on this button lime would exactly
+     match the banner behind it and the button would visually disappear on
+     hover instead of standing out. */
+  background-color: var(--base--white);
+  transform: translateY(103%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1); /* outQuint */
+  pointer-events: none;
+}
+.apply-banner_button:hover {
+  color: var(--base--blue-dark);
+}
+.apply-banner_button:hover::before {
+  transform: translateY(0);
+}
+/* ::before is positioned (absolute), so it paints above the button's own
+   plain text regardless of DOM order — same rule that bit the hero video
+   overlap earlier. Give the text its own position so it stacks on top. */
+.apply-banner_button-text {
+  position: relative;
+  z-index: 1;
+}
+/* --- Apply banner: 3-column process list under the button ---
+   Each step is a column (number badge on top, copy below), left to right. */
+.apply-banner_steps {
+  width: 100%;
+  max-width: 60rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.apply-banner_step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+.apply-banner_step-num {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--base--blue-dark);
+  color: var(--base--sky-blue);
+  font-family: var(--_typography---font-family--headers);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.apply-banner_step-text {
+  line-height: 1.4;
+}
+/* Narrow screens: stack the three columns instead of squeezing them. */
+@media screen and (max-width: 767px) {
+  .apply-banner_steps {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* --- One-pager nav: make the navbar sticky ---
+   Source .navbar is `position: absolute` (webflow.css) — an overlay meant to
+   sit on top of the hero image on a fresh page load, then scroll away with
+   the rest of the page. For a single scrolling page with anchor links, the
+   nav needs to stay reachable the whole way down, so it's promoted to
+   `sticky` here (override point, same reasoning as the accent color above). */
+:root {
+  --navbar-height: 5.5rem;
+}
+/* The navbar bar is a solid, fully opaque rectangle — pinned in place by
+   `sticky` so the logo and [APPLY NOW] button always sit on a consistent
+   background, with nothing from the page ever showing through behind them.
+   A real box-shadow (not a painted gradient overlay) casts underneath it,
+   giving it a pinned, elevated edge that visibly separates the bar from
+   whatever scrolls past beneath it. */
+.navbar {
+  position: sticky !important;
+  top: 0;
+  z-index: 90;
+  background: rgb(25, 25, 25);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.6);
+}
+/* --- Hero video: fill the gap above it ---
+   The navbar is `position: sticky` (above), which still reserves its own
+   height at the top of the page's normal flow — so the hero section (and
+   its full-bleed video) started right below that reserved strip, leaving a
+   solid-color gap at the very top of the page instead of the video running
+   edge to edge. Pulling the hero section up by exactly the navbar's height
+   lets the video fill that gap; the (transparent) navbar still sits on top
+   of it, since it has its own higher z-index. */
+.section_hero {
+  margin-top: calc(-1 * var(--navbar-height));
+}
+/* Anchor-link sections need breathing room above them equal to the sticky
+   navbar's height, or the nav bar will cover the top of the section when the
+   browser jumps to it. */
+.anchor-section {
+  scroll-margin-top: var(--navbar-height);
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- Footer layout: from landscape down, the logo sits alone on the top row
+   and the link columns drop below it (grid is 2-col at <=767, 1-col at <=479). */
+@media screen and (max-width: 767px) {
+  .footer_logo {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --- Episode-detail hero "listen on" links.
+   Desktop (3-col grid): Spotify left, Youtube center, Apple right — the source
+   per-instance w-node layout, recreated here so the markup stays clean. */
+@media screen and (min-width: 992px) {
+  .plataform_wrap > *:nth-child(2) { justify-self: center; }
+  .plataform_wrap > *:nth-child(3) { justify-self: end; }
+}
+
+/* Tablet & down: 2 columns, each item centered in its cell; the 3rd item wraps
+   to the next row spanning BOTH columns, centered. */
+@media screen and (max-width: 991px) {
+  .plataform_wrap {
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+  }
+  .plataform_wrap > *:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile portrait: stack to a single centered column. */
+@media screen and (max-width: 479px) {
+  .plataform_wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   Hovers (Phase S3, Lote 2) — ported from Webflow IX2.
+   ============================================================================= */
+
+/* Portfolio card image hover (source a-52/a-53). The "View More" pill
+   (.view_button) is hidden at rest and revealed on hover; its transform is
+   GSAP-driven (scroll-reveal.ts) because it composes scale + the cursor
+   follow (a-40). Here we only set the rest (hidden) state. */
+.view_button {
+  transform: scale(0);
+  opacity: 0;
+}
+
+/* Frequency platform-card hover (source a-54/a-55): a circular overlay rises
+   from below to fill the card, the platform name turns accent, the icon slides
+   left, and the bottom border darkens. */
+.card_media .card-overlay {
+  display: block;
+  transform: translateY(103%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1); /* outQuint */
+  pointer-events: none;
+}
+.card_media:hover .card-overlay {
+  transform: translateY(0);
+}
+.card_media .plataform_name {
+  transition: color 0.4s ease, transform 0.4s ease;
+}
+.card_media:hover .plataform_name {
+  color: var(--text-color--text-primary);
+  transform: translateX(2rem);
+}
+.card_media {
+  transition: border-color 0.4s ease;
+}
+.card_media:hover {
+  border-bottom-color: var(--bg-color--bg-default);
+}
+
+/* is-second variant (about / episodes — source a-61/a-62 "Hover Card V2"):
+   inverted from the default. The name + icon REST at accent (.card_media.is-second
+   color) and DARKEN to subtle on hover; the bottom border goes grey. The overlay
+   rise and the name +2rem / icon -2rem moves are shared with the default rules. */
+.card_media.is-second:hover .plataform_name {
+  color: var(--text-color--text-subtle);
+}
+.card_media.is-second:hover {
+  border-bottom-color: var(--text-color--text-secondary);
+}
+
+/* Related-episode slider card hover (source a-44/a-45 "Card Hover On/Off"):
+   a subtle scale 1.02 on hover. In = 250ms outQuad, out = 500ms outQuart.
+   Scoped to .card_item (only the related slider uses it; the showcase cards
+   are .card_portfolio-item). Composes with the inner .view_button GSAP hover. */
+.card_item {
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); /* outQuart (out) */
+}
+.card_item:hover {
+  transform: scale(1.02);
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* outQuad (in) */
+}
+
+/* Related-BLOG slider card hover (detail_blogs.html a-44/a-45, on .article_card):
+   same scale 1.02 as .card_item, but the blog related card is .article_card and
+   has NO "View More" pill (the source omits view_wrap/view_button here — unlike
+   the blog LIST card, which uses a-52/a-53). Scoped to the related-blogs slider
+   so the LIST `.article_card` (whose hover is the view pill) is untouched. */
+.related-blogs-swiper .article_card {
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); /* outQuart (out) */
+}
+.related-blogs-swiper .article_card:hover {
+  transform: scale(1.02);
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* outQuad (in) */
+}
+
+/* About "Echoes in frame" — PORTRAIT/mobile (≤767px): the source's asymmetric
+   2×2 grid overflows and shrinks the small images. Owner wants the 4 images to
+   stack into a single column, each at its NATURAL aspect ratio and at a generous
+   size (full width). Flatten each row's 2-col grid into a column and let the
+   <img> render at its intrinsic ratio (static, width:100%, height:auto) instead
+   of the absolute object-fit:cover aspect-box. Desktop keeps the 2×2 design. */
+@media screen and (max-width: 767px) {
+  .section_frame .frame_visual_items,
+  .section_frame .frame_visual_items.is_second {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .section_frame .frame_container {
+    gap: 1.5rem;
+  }
+  .section_frame .visual_left,
+  .section_frame .visual_right {
+    padding-top: 0;
+  }
+  .section_frame .visual_left .img,
+  .section_frame .visual_right .img {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* About pull-quote — PORTRAIT (≤767px): the source staggers the 2nd line with a
+   12.5% left indent, which looks unbalanced on a narrow screen. Center both lines
+   and drop the indent so the quote reads balanced on mobile. Desktop/tablet keep
+   the staggered design. */
+@media screen and (max-width: 767px) {
+  .section_review .about_content.is-left,
+  .section_review .about_content.is-left .text_rigth,
+  .section_review .about_content.is-left .max-title,
+  .section_review .about_content.is-left .h2_about {
+    text-align: center;
+  }
+  .section_review .about_content.is-left {
+    align-items: center;
+  }
+  .section_review .about_content.is-left .text_rigth {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Footer links must never wrap. Multi-word links (e.g. "Join our community")
+   were breaking mid-word in narrow portrait columns (e.g. "COMM/UNITY").
+   Keep each link on a single line. */
+.footer_link .link_text-wrap,
+.footer_link .text_link_tag {
+  white-space: nowrap;
+}
+
+/* Footer (≤767px, stacked): the gap BETWEEN the link groups (.footer_layout
+   grid-row-gap 2rem) was double the gap WITHIN a column (.footer_column 1rem),
+   so e.g. Episodes→"Join our AI community" looked larger than About Us→Episodes.
+   Match the row-gap to the column gap so the vertical rhythm is uniform. */
+@media screen and (max-width: 767px) {
+  .footer_layout {
+    row-gap: 1rem;
+  }
+}

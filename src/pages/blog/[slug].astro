@@ -1,0 +1,135 @@
+---
+// /blog/[slug] — blog detail. From detail_blogs.html:
+//   hero (tag / title / author·date / thumbnail) · section_rich-text (resumen)
+//   · section_latest (related blogs → Swiper) · FrequencySection · Footer.
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import RelatedBlogsSlider from '../../components/RelatedBlogsSlider.astro';
+import FrequencySection from '../../components/FrequencySection.astro';
+
+export async function getStaticPaths() {
+  // Descending order to match the blog list (newest first).
+  const blogs = (await getCollection('blogs')).sort(
+    (a, b) => b.data.order - a.data.order
+  );
+  return blogs.map((post) => ({
+    params: { slug: post.id },
+    props: { post, all: blogs },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blogs'>;
+  all: CollectionEntry<'blogs'>[];
+}
+const { post, all } = Astro.props;
+const { name, author, date, thumbnail, resumen } = post.data;
+
+const related = all.filter((p) => p.id !== post.id);
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/episodes', label: 'Episodes' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact Us' },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: name,
+  ...(author ? { author: { '@type': 'Person', name: author } } : {}),
+  ...(date ? { datePublished: date } : {}),
+  ...(thumbnail ? { image: new URL(thumbnail, Astro.site).toString() } : {}),
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+  publisher: { '@type': 'Organization', name: 'Lyria' },
+};
+---
+<BaseLayout
+  title={`${name} — Lyria`}
+  description={post.data.shortDescription}
+  image={thumbnail}
+  ogType="article"
+  schema={schema}
+>
+  <Navbar navLinks={navLinks} logoSrc="/images/Lyria-3.svg" brand="Lyria" />
+
+  <main class="main-wrapper">
+    <!-- HERO -->
+    <section class="section_hero">
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="hero_container">
+            <div class="flex_four-gap">
+              <div class="w-layout-vflex content_top">
+                <div data-reveal="left" class="tag">
+                  <div class="text_tag">Latest</div>
+                </div>
+                <h2 data-reveal="left" data-reveal-delay="100" class="h2_clamp">{name}</h2>
+                <div data-reveal="left" data-reveal-delay="20" class="listener_content">
+                  {author && <div>{author}</div>}
+                  <div class="icon_menu"></div>
+                  {date && <div>{date}</div>}
+                </div>
+              </div>
+              <div class="hero_blog"><img src={thumbnail} loading="lazy" alt={name} class="img-parallax"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <!-- RICH TEXT BODY -->
+    <section class="section_rich-text">
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="about_grid">
+            <div data-reveal="left" class="about_content">
+              <div class="tag">
+                <div class="text_tag">Content</div>
+              </div>
+            </div>
+            <div class="content_right">
+              <div data-reveal="right" class="text-rich-text w-richtext" set:html={resumen}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <!-- RELATED (Swiper) -->
+    <section class="section_latest">
+      <div class="padding-section-medium"></div>
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="w-layout-vflex content_top">
+            <div data-reveal="left">
+              <div class="tag">
+                <div class="text_tag">Latest</div>
+              </div>
+            </div>
+            <h2 data-reveal="left" data-reveal-delay="100" class="h2_clamp">Article of the Week</h2>
+            <div data-reveal="left" data-reveal-delay="200" class="text-color-secondary">This blog is your backstage pass to the world of podcast creation — from storytelling tips and audio trends to behind-the-scenes glimpses of our process.</div>
+          </div>
+          <div class="spacer">
+            <div style="height:4rem" class="spacer-desktop"></div>
+            <div style="height:3rem" class="spacer-tablet"></div>
+            <div style="height:2rem" class="spacer-mobile"></div>
+          </div>
+          <RelatedBlogsSlider posts={related} />
+        </div>
+      </div>
+      <div class="padding-section-medium"></div>
+    </section>
+
+    <FrequencySection />
+  </main>
+
+  <Footer />
+</BaseLayout>

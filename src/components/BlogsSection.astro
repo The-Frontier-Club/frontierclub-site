@@ -1,0 +1,54 @@
+---
+// BlogsSection.astro — the blog card grid (source `team_list is-hero-cards` /
+// `card_article-list` from blogs.html). CMS Blogs, sorted by order.
+//
+// CLICKABILITY (owner decision 2026-06-16, source-faithful): the WHOLE card is
+// one link — the source wraps everything in a single <a class="article_card">,
+// and "Read more" is decorative text (a <div>), NOT a nested link (HTML forbids
+// <a> inside <a>). We mirror that: the card root anchor goes to /blog/[slug] and
+// "Read more" is a plain <div>. This aligns with the hover affordance (the
+// "View More" pill + cursor-follow + image contrast already signal the card is
+// clickable). NOTE: this intentionally diverges from Catalis, where blog cards
+// are deliberately NOT clickable — Lyria follows its own source here.
+// IX hooks / inline opacity:0 / transform initial states stripped; the
+// `animation` attribute hooks are preserved as data-less markers where present.
+import { getCollection } from 'astro:content';
+
+// Source/live shows the posts in descending `order` (newest first) — the
+// reverse of the field's ascending value, matching lyria-temlis.webflow.io/blogs.
+const blogs = (await getCollection('blogs')).sort(
+  (a, b) => b.data.order - a.data.order
+);
+---
+<div class="w-dyn-list">
+  <div role="list" class="team_list is-hero-cards w-dyn-items">
+    {blogs.map((post) => (
+      <div role="listitem" data-reveal="bottom" class="card_article-list w-dyn-item">
+        <a href={`/blog/${post.id}`} class="article_card w-inline-block">
+          <div class="article_img">
+            <div class="view_wrap">
+              <div class="view_button">
+                <div>View More</div>
+              </div>
+            </div>
+            <img style="filter:contrast(70%)" src={post.data.thumbnail} alt={post.data.name} loading="lazy" class="img">
+          </div>
+          <div class="article_content">
+            <div class="text-4xl text-style-2lines">{post.data.name}</div>
+            <div class="text-color-secondary">{post.data.shortDescription}</div>
+            <div class="play_link">
+              <div class="play_wrap is-blog">
+                <div class="text-decorate">[</div>
+                <div class="link_text-wrap">
+                  <div class="text_link_tag">Read more</div>
+                  <div class="text_link_tag is-absolute">Read more</div>
+                </div>
+                <div class="text-decorate">]</div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    ))}
+  </div>
+</div>

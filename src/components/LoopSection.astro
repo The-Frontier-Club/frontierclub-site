@@ -1,0 +1,52 @@
+---
+// LoopSection.astro — "DARE TO SAY YES" marquee strip (section_loop).
+// Two source variants:
+//   - default → home / about / episodes / contact: container-full > loop_flex
+//     (column) with 3 stacked rows (animation text-scroll-one/two).
+//   - isLoop  → episode detail: loop_flex.is-loop (row) with 2 rows forming a
+//     single horizontal marquee line (animation text-loop), NO container-full.
+// Static markup (animation added in Phase S3). Hooks preserved.
+interface Props {
+  /** Use the `is-loop` variant (episode detail: one horizontal line). */
+  isLoop?: boolean;
+}
+const { isLoop = false } = Astro.props;
+---
+{isLoop ? (
+  <section class="section_loop">
+    <div class="loop_flex is-loop">
+      <div animation="text-loop" class="text_loop">
+        <div>Dare To Say Yes * </div>
+        <div>Dare To Say Yes * </div>
+        <div>Dare To Say Yes * </div>
+      </div>
+      <div animation="text-loop" class="text_loop">
+        <div>Dare To Say Yes * </div>
+        <div>Dare To Say Yes * </div>
+        <div>Dare To Say Yes * </div>
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="section_loop">
+    <div class="container-full">
+      <div class="loop_flex">
+        <div animation="text-scroll-one" class="text_loop">
+          <div>Dare To Say Yes * </div>
+          <div>Dare To Say Yes * </div>
+          <div>Dare To Say Yes * </div>
+        </div>
+        <div animation="text-scroll-two" class="text_loop">
+          <div>Dare To Say Yes * </div>
+          <div>Dare To Say Yes * </div>
+          <div>Dare To Say Yes * </div>
+        </div>
+        <div animation="text-scroll-one" class="text_loop">
+          <div>Dare To Say Yes * </div>
+          <div>Dare To Say Yes * </div>
+          <div>Dare To Say Yes * </div>
+        </div>
+      </div>
+    </div>
+  </section>
+)}

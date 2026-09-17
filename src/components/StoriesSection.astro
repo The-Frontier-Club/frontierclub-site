@@ -1,0 +1,87 @@
+---
+// StoriesSection.astro — "Listener Stories" (section_stories) quote block.
+// animation="highlight" hook kept. Reveal stagger (`delay`) differs per page in
+// the source, so it's passed in (defaults 0 = no stagger → preserves episodes).
+// Home decoded values: headline 100, listener 100, quote1 100, quote2 200.
+interface Props {
+  headlineDelay?: number;
+  listenerDelay?: number;
+  quote1Delay?: number;
+  quote2Delay?: number;
+  /** Whether the pull-quote slides in. Home reveals it; episodes leaves it
+      static (the source has no reveal event on the quote there). */
+  revealQuotes?: boolean;
+  /** Optional element id, so this section can be a same-page anchor target
+      (e.g. a nav link jumping to `#stories`). */
+  id?: string;
+  /** Section heading. Pass `null` to render no heading at all (home has
+      none); other pages (episode detail/list) keep the default below. */
+  heading?: string | null;
+  /** Show the "become a founding member" CTA below the quote. Home-only —
+      an application prompt doesn't belong on the episode pages. */
+  showApplyButton?: boolean;
+  /** The two lines of body copy. Defaults to the placeholder listener
+      testimonial; home passes the real Mission 200 statement instead. */
+  line1?: string;
+  line2?: string;
+  /** Wrap line1/line2 in literal quotation marks. Defaults on for the
+      placeholder listener testimonial; home also keeps it on for its
+      Mission 200 statement, by request. */
+  isTestimonial?: boolean;
+  /** Small Weird Horses aside above the section (home: "mission") — a
+      handwritten label, independent of (and unrelated to) `heading`. */
+  preLabel?: string;
+}
+const {
+  headlineDelay = 0, listenerDelay = 0, quote1Delay = 0, quote2Delay = 0,
+  revealQuotes = true,
+  id,
+  heading = 'Traveler Stories',
+  showApplyButton = false,
+  line1 = "I went in expecting a trip. I came back having actually changed how I think about risk.",
+  line2 = 'The group was small enough that it never felt like a tour — it felt like something we did together',
+  isTestimonial = true,
+  preLabel,
+} = Astro.props;
+---
+<section id={id} class="section_stories anchor-section">
+  {heading && (
+    <h2 data-reveal="shrink" data-reveal-delay={headlineDelay || undefined} class="h2_headline-stories">{heading}</h2>
+  )}
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="spacer_big"></div>
+      <div class="listener_wrap">
+        <div data-reveal="left" data-reveal-delay={listenerDelay || undefined} class="listener_img"><img src="/images/group-travel.jpg" loading="lazy" alt="" class="img"></div>
+        <div animation="highlight" class="about_content">
+          {preLabel && (
+            <div class="label-weird-horses font-secondary">{preLabel}</div>
+          )}
+          <div data-reveal={revealQuotes ? 'right' : undefined} data-reveal-delay={quote1Delay || undefined} class="max-title is-50rem">
+            <h2 class="h2_about">{isTestimonial && '"'}{line1}</h2>
+          </div>
+          <div data-reveal={revealQuotes ? 'right' : undefined} data-reveal-delay={quote2Delay || undefined} class="text_rigth hide-mobile-portrait">
+            <div class="max-title is-55rem">
+              <h2 class="h2_about">{line2}{isTestimonial && '"'}</h2>
+            </div>
+          </div>
+          {showApplyButton && (
+            <div animation="item">
+              <a href="https://form.typeform.com/to/Cs6etR3o" target="_blank" rel="noopener" class="play_link w-inline-block">
+                <div class="play_wrap">
+                  <div class="text-decorate">[</div>
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">BECOME A FOUNDING MEMBER</div>
+                    <div class="text_link_tag is-absolute">BECOME A FOUNDING MEMBER</div>
+                  </div>
+                  <div class="text-decorate">]</div>
+                </div>
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="padding-section-medium"></div>
+</section>

@@ -1,0 +1,11 @@
+{
+  // Worker name. The first deploy creates the worker; it goes live at
+  // the-frontier-club.<account>.workers.dev
+  "name": "the-frontier-club",
+  "compatibility_date": "2026-06-03",
+  // Purely static: Workers just serves the built dist/ as assets. No "main" entry-point.
+  "assets": {
+    "directory": "./dist"
+  },
+  "workers_dev": true
+}

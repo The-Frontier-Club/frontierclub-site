@@ -1,0 +1,107 @@
+/* =============================================================================
+   marquee.css — seamless continuous-scroll marquee (CSS-only, default variant)
+   Pairs with marquee.ts (optional JS for constant px/s speed + auto-fill).
+
+   PROBLEM IT SOLVES
+   Webflow native Loop / IX2 continuous-loop interactions (a-NN "loop")
+   translate a track forever. The CSS port reproduces that with @keyframes +
+   `animation: <n>s linear infinite` — no JS, no jank. This file is the
+   reusable skeleton: copy it, swap `marquee` for your component prefix, and
+   (if needed) layer marquee.ts on top for constant-speed + auto-fill.
+
+   MARKUP CONTRACT (see marquee.ts header for the JS-driven version)
+     <div class="marquee" data-marquee>            ← clip + hover target
+       <div class="marquee_track">                 ← the animated element
+         <div class="marquee_set">…items…</div>     ← set 1 (real content)
+         <div class="marquee_set" aria-hidden="true">…items…</div>  ← set 2 = exact dup
+       </div>
+     </div>
+
+   SEAMLESS-LOOP MATH (the #1 gotcha — learned on Upmind/Coverly 2026)
+   translateX(-50%) is a PERFECT repeat ONLY if the track is a uniformly
+   periodic strip: every item — INCLUDING the last of each set — must be
+   followed by the SAME gap, so width = 2 × (N items + N gaps).
+   A pure flex `gap` sits only BETWEEN items, so the last item of set 2 has
+   NO trailing gap → -50% lands half-a-gap short → a visible jump on reset.
+   FIX: render the gap as `margin-right` on every item (last included) and
+   zero the flex `gap`. Now the strip is exactly periodic and -50% is exact.
+
+   SPEED: see --marquee-duration. Hardcoding seconds gives inconsistent
+   velocity when item count / content width changes (Coverly: 60s/8 cards felt
+   wrong). For constant px/s across any width, let marquee.ts compute and set
+   --marquee-duration at runtime (duration = contentWidth / pxPerSecond), or
+   keep --marquee-duration here as a sensible static fallback.
+   ============================================================================= */
+
+/* Tunables — override per component via inline style or a scoped rule.
+   --marquee-duration : seconds for ONE set to scroll past (the loop period).
+                        Static fallback; marquee.ts overrides for constant px/s.
+   --marquee-gap      : space between items. Applied as margin-right (see math). */
+.marquee {
+  --marquee-duration: 30s;
+  --marquee-gap: 0.75rem;
+
+  position: relative;
+  overflow: hidden; /* clip the off-screen set */
+}
+
+/* The animated element. `width: max-content` lets it be as wide as both sets.
+   `will-change: transform` promotes it to its own layer (GPU) → smooth. */
+.marquee_track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-scroll var(--marquee-duration) linear infinite;
+}
+
+/* Each set is a flex row of items. Zero the flex gap — the spacing is carried
+   by margin-right on the items so the strip stays uniformly periodic (see math). */
+.marquee_set {
+  display: flex;
+  column-gap: 0;
+}
+
+/* The gap as a TRAILING margin on every item (last item of each set included).
+   This is what makes translateX(-50%) seamless. Same visual spacing as a gap. */
+.marquee_set > * {
+  margin-right: var(--marquee-gap);
+  flex: none; /* don't let items shrink — the track must keep its true width */
+}
+
+/* transform-only animation: no layout/paint, just compositor. set 2 lands
+   exactly where set 1 began, so the loop is invisible. */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Reverse direction — add `data-marquee-reverse` (or a modifier class) and the
+   track scrolls the other way. Same period, same seamlessness. */
+.marquee[data-marquee-reverse] .marquee_track,
+.marquee_track--reverse {
+  animation-name: marquee-scroll-reverse;
+}
+@keyframes marquee-scroll-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* PAUSE-ON-HOVER — pausing the animation (not the layer) keeps it cheap.
+   Opt OUT per instance with `data-marquee-nohover` if a director finds it
+   jarring mid-read (Advisora removed it on testimonials for that reason). */
+.marquee:not([data-marquee-nohover]):hover .marquee_track {
+  animation-play-state: paused;
+}
+/* Also pause on keyboard focus inside the track (accessibility parity). */
+.marquee:not([data-marquee-nohover]):focus-within .marquee_track {
+  animation-play-state: paused;
+}
+
+/* PREFERS-REDUCED-MOTION — stop animating entirely. The track stays at its
+   start position so set 1 (the real content) is fully readable; set 2 is
+   aria-hidden so SR users don't hear duplicates. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee_track {
+    animation: none;
+  }
+}

@@ -1,0 +1,80 @@
+---
+// TeamSection.astro — about page "Our team" (section_team).
+// 4 team cards mapped from data. IX inline initial states stripped (static page);
+// `animation` hooks preserved on each card via the border_left wrapper.
+// `border_left.is-mobile` alternates per source (cards 2 & 4).
+
+const team = [
+  {
+    name: 'Brandon Green',
+    role: 'Content Director',
+    bio: 'Crafting narratives that resonate with listeners is my passion and purpose.',
+    img: '/images/Frame-2147226863-3.avif',
+    srcset:
+      '/images/Frame-2147226863-3-p-500.avif 500w, /images/Frame-2147226863-3.avif 564w',
+    mobile: false,
+  },
+  {
+    name: 'Paityn Gouse',
+    role: 'Content Director',
+    bio: 'Crafting narratives that resonate with listeners is my passion and purpose.',
+    img: '/images/Frame-2147226864-2.avif',
+    srcset:
+      '/images/Frame-2147226864-2-p-500.avif 500w, /images/Frame-2147226864-2.avif 564w',
+    mobile: true,
+  },
+  {
+    name: 'Cheyenne Curtis',
+    role: 'Content Director',
+    bio: 'Crafting narratives that resonate with listeners is my passion and purpose.',
+    img: '/images/Frame-2147226865-1.avif',
+    srcset:
+      '/images/Frame-2147226865-1-p-500.avif 500w, /images/Frame-2147226865-1.avif 564w',
+    mobile: false,
+  },
+  {
+    name: 'Omar Levin',
+    role: 'Content Director',
+    bio: 'Crafting narratives that resonate with listeners is my passion and purpose.',
+    img: '/images/Frame-2147226866.avif',
+    srcset:
+      '/images/Frame-2147226866-p-500.avif 500w, /images/Frame-2147226866.avif 564w',
+    mobile: true,
+  },
+];
+---
+<section class="section_team">
+  <div class="padding-section-medium"></div>
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="flex_four-gap">
+        <div class="w-layout-vflex content_top">
+          <div data-reveal="left" class="tag">
+            <div class="text_tag">Teams</div>
+          </div>
+          <h2 data-reveal="left" data-reveal-delay="100" class="h2_clamp">Our team</h2>
+          <div data-reveal="left" data-reveal-delay="200" class="text-color-secondary">Meet the passionate individuals behind our platform.</div>
+        </div>
+        <div class="team_list">
+          {team.map((member, i) => (
+            <div data-reveal={i % 2 === 0 ? 'left' : 'right'} data-reveal-delay={i * 100} class={`border_left${member.mobile ? ' is-mobile' : ''}`}>
+              <div class="team_card">
+                <div class="team_card-wrapp">
+                  <div class="team_card-img"><img src={member.img} loading="lazy" alt={member.name} sizes="(max-width: 564px) 100vw, 564px" srcset={member.srcset} class="img"></div>
+                  <div class="max-description is-17rem">
+                    <div class="text-color-secondary">{member.bio}</div>
+                  </div>
+                </div>
+                <div class="team_name-wrap">
+                  <div class="text-4xl">{member.name}</div>
+                  <div class="text-sm text-color-secondary">{member.role}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="padding-section-medium"></div>
+</section>

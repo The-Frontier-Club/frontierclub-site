@@ -1,0 +1,58 @@
+---
+// FrequencySection.astro — "Stay in the frequency" (section_frequency).
+// NOTE: in the Lyria source this section is a row of platform cards
+// ([ musikgo ] / [ rippletube ] / [ vuemusic ]) — NOT a newsletter form.
+// Two source variants:
+//   - default  → home / blog / detail pages (section_frequency)
+//   - isSecond → about & episodes pages (section_frequency is-second:
+//     adds secondary-65/66/69 utility classes + single card-overlay).
+// Platform cards link to temlis.com (seller links, KEEP). IX hooks/initial
+// states stripped.
+interface Props {
+  /** Use the `is-second` variant (about & episodes pages). */
+  isSecond?: boolean;
+}
+const { isSecond: s = false } = Astro.props;
+
+const sectionClass = s ? 'section_frequency is-second' : 'section_frequency';
+const h2Class = s ? 'h2_frequency is-second' : 'h2_frequency';
+const cardClass = s ? 'card_media is-second w-inline-block' : 'card_media w-inline-block';
+const overlayClass = s ? 'card-overlay is-second' : 'card-overlay';
+const nameClass = (i: number) => `plataform_name${s && i > 0 ? ' secondary-65' : ''}`;
+const lastPadClass = s ? 'padding-section-medium secondary-69' : 'padding-section-medium';
+
+const cards = [
+  { label: '[ join the community ]', href: 'https://www.instagram.com/channel/8JeD5pnciX28X_jJ/', external: true },
+  { label: '[ sign up for updates ]', href: 'https://mailchi.mp/joinfrontierclub/sign-up-the-frontier-club', external: true },
+  { label: '[ apply now ]', href: 'https://form.typeform.com/to/Cs6etR3o', external: true },
+];
+---
+<section class={sectionClass}>
+  <div class="padding-section-medium"></div>
+  <div class="padding-global">
+    <div class="container-large">
+      <h2 class={h2Class} data-reveal="bottom">Stay in the know</h2>
+      <div class="spacer">
+        <div style="height:3rem" class="spacer-desktop"></div>
+        <div style="height:2.5rem" class="spacer-tablet"></div>
+        <div style="height:2rem" class="spacer-mobile"></div>
+      </div>
+      <div class="container_plataform" data-reveal={s ? 'left' : 'bottom'}>
+        <a href={cards[0].href} target={cards[0].external ? '_blank' : undefined} rel={cards[0].external ? 'noopener' : undefined} class={cardClass}>
+          <div class={nameClass(0)}>{cards[0].label}</div>
+          <div class={overlayClass}></div>
+        </a>
+        <a href={cards[1].href} target={cards[1].external ? '_blank' : undefined} rel={cards[1].external ? 'noopener' : undefined} class={cardClass}>
+          <div class={nameClass(1)}>{cards[1].label}</div>
+          <div class={overlayClass}></div>
+        </a>
+        <a href={cards[2].href} target={cards[2].external ? '_blank' : undefined} rel={cards[2].external ? 'noopener' : undefined} class={cardClass}>
+          <div class={nameClass(2)}>{cards[2].label}</div>
+          <div class={overlayClass}></div>
+          {!s && <div class="card-overlay"></div>}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class={lastPadClass}></div>
+</section>

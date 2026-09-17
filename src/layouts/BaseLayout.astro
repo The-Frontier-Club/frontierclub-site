@@ -1,0 +1,124 @@
+---
+// Fonts (self-hosted via @fontsource)
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/anton-sc/400.css';
+import '@fontsource/bricolage-grotesque/400.css';
+import '@fontsource/bricolage-grotesque/600.css';
+
+// Style cascade: normalize -> tokens -> webflow (merged) -> global embed -> components
+import '../styles/normalize.css';
+import '../styles/tokens.css';
+import '../styles/webflow.css';
+import '../styles/global-styles.css';
+import '../styles/marquee.css';
+import '../styles/grid-slider.css';
+import '../styles/components.css';
+import '../styles/anim.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: object;
+}
+
+const {
+  title,
+  description = 'The Frontier Club: small-group, application-only trips built around travel that actually changes you.',
+  image = '/images/og-image.jpg',
+  ogType = 'website',
+  noindex = false,
+  schema,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL(image, Astro.site).toString();
+const siteUrl = Astro.site?.toString() ?? canonical;
+
+// Site-wide structured data (emitted on every page). Organization establishes
+// the brand identity (referenced as the publisher by per-page BlogPosting/
+// PodcastEpisode schema); WebSite covers the site itself. Per-page `schema`
+// (BlogPosting, PodcastEpisode, Blog, etc.) is emitted separately below.
+const orgId = `${siteUrl}#organization`;
+const siteSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': orgId,
+    name: 'The Frontier Club',
+    url: siteUrl,
+    logo: new URL('/images/frontier-club-logo.png', siteUrl).toString(),
+    description:
+      'The Frontier Club: small-group, application-only trips built around travel that actually changes you.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteUrl}#website`,
+    name: 'The Frontier Club',
+    url: siteUrl,
+    publisher: { '@id': orgId },
+    inLanguage: 'en',
+  },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta name="theme-color" content="#191919" />
+
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="The Frontier Club" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Site-wide structured data (Organization + WebSite) -->
+    <script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
+    <!-- Per-page structured data -->
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+
+    <!-- Arm the entrance-animation initial states (anim.css) before first paint,
+         but only when JS runs and motion is allowed — so non-JS / reduced-motion
+         users never get the hidden states. -->
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('anim-ready');
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <slot />
+    </div>
+    <script>
+      import '../scripts/scroll-reveal.ts';
+    </script>
+  </body>
+</html>

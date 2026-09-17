@@ -1,0 +1,346 @@
+---
+// Navbar.astro — Lyria faithful navbar.
+// =============================================================================
+// Logo + a single "menu" dropdown panel (.nav_links.is-dropdown → .nav_wrapper),
+// OR — when `applyHref` is passed — a direct external CTA link in its place
+// (home: no menu, just "[APPLY NOW]" straight to the application form). The
+// trigger and each dropdown link carry the double .text_link_tag per-letter
+// hover swap. The panel slides down full-width (translateY -140%↔0, 500ms
+// ease-in-out) — that open/close + transition is the only geometry kept from
+// the source.
+//
+// DROPDOWN LAYOUT — editorial big-type menu (redesigned 2026-06-17): the source
+// shipped a 3-column mega-menu built for 15+ links, which read half-empty with
+// our 5 routes. Replaced with a vertical list of large Anton-SC display links
+// (numbered 01–05), left-aligned, with the featured image filling the right
+// column — leaning into the template's giant-display-type identity instead of
+// padding empty grid cells. Per-letter hover swap preserved (.link_text-wrap /
+// .text_link_tag), plus a subtle slide + sky-blue tint. Image hidden ≤767px.
+//
+// SINGLE SOURCE OF TRUTH: the `navLinks` array feeds the whole dropdown.
+// =============================================================================
+
+interface NavLink {
+  href: string;
+  label: string;
+  /** Set true for links that leave the site (e.g. an external application
+      form) — renders target="_blank" + rel="noopener" so the new tab can't
+      access this page via `window.opener` (a security best-practice for any
+      link opening in a new tab). */
+  external?: boolean;
+}
+
+interface Props {
+  /** Only needed for the dropdown-menu variant (no `applyHref`). */
+  navLinks?: NavLink[];
+  logoSrc?: string;
+  brand?: string;
+  /** When set, the "[APPLY NOW]" trigger becomes a direct external link to
+      this URL instead of the "menu" dropdown toggle — home-only, since the
+      dropdown is still the only way to reach the other nav links (and, on
+      the orphaned pages, the only way to navigate between routes at all). */
+  applyHref?: string;
+}
+
+const {
+  navLinks = [],
+  logoSrc = '/images/Lyria-3.svg',
+  brand = 'Lyria',
+  applyHref,
+} = Astro.props;
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/');
+---
+
+<div data-navbar class="navbar w-nav" animation="navbar">
+  <div class="padding-global is-navbar">
+    <div class="container-full">
+      <div class="navbar_content">
+        <a href="/" aria-label={`${brand}, home`} animation="item" class="navbar_logo-link">
+          <img loading="lazy" src={logoSrc} alt={brand} class="navbar_logo" />
+        </a>
+        <div class="nav_container">
+          {applyHref ? (
+            /* Direct CTA — no menu. */
+            <a
+              href={applyHref}
+              target="_blank"
+              rel="noopener"
+              animation="item"
+              class="nav_links is-dropdown w-inline-block"
+            >
+              <div class="link_text-wrap">
+                <div class="text_link_tag">[APPLY NOW]</div>
+                <div class="text_link_tag is-absolute">[APPLY NOW]</div>
+              </div>
+            </a>
+          ) : (
+            /* "menu" dropdown panel (all viewports). Holds all real routes. */
+            <div class="nav_dropdown" data-nav-dropdown>
+              <a
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-nav-dropdown-toggle
+                animation="item"
+                class="nav_links is-dropdown w-inline-block"
+              >
+                <div class="link_text-wrap">
+                  <div class="text_link_tag">[APPLY NOW]</div>
+                  <div class="text_link_tag is-absolute">[APPLY NOW]</div>
+                </div>
+              </a>
+              <div class="nav_wrapper">
+                <div class="nav_menu-grid">
+                  <nav class="nav_menu-list" aria-label="Primary">
+                    {
+                      navLinks.map((link, i) => (
+                        <a
+                          href={link.href}
+                          target={link.external ? '_blank' : undefined}
+                          rel={link.external ? 'noopener' : undefined}
+                          aria-current={isCurrent(link.href) ? 'page' : undefined}
+                          class={`nav_menu-link w-inline-block${isCurrent(link.href) ? ' w--current' : ''}`}
+                        >
+                          <span class="nav_menu-num">{String(i + 1).padStart(2, '0')}</span>
+                          <div class="link_text-wrap">
+                            <div class="text_link_tag">{link.label}</div>
+                            <div class="text_link_tag is-absolute">{link.label}</div>
+                          </div>
+                        </a>
+                      ))
+                    }
+                  </nav>
+                  <div class="nav_menu-media">
+                    <img
+                      src="/images/bruno-cervera-dtqlaz4HyHw-unsplash-1_1.avif"
+                      sizes="(max-width: 991px) 40vw, 33vw"
+                      srcset="/images/bruno-cervera-dtqlaz4HyHw-unsplash-1_1-p-500.avif 500w, /images/bruno-cervera-dtqlaz4HyHw-unsplash-1_1.avif 720w"
+                      loading="lazy"
+                      alt=""
+                      class="img"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* "menu" dropdown open/close. The source slides .nav_wrapper down from the top
+     (base state is translateY(-140%) in webflow.css); open = translateY(0).
+     .nav_wrapper is absolute against .navbar (full-width panel) — no positioning
+     context on .nav_dropdown so it spans the whole bar like the source. */
+  .nav_dropdown .nav_wrapper {
+    /* Source NavBar Open/Close (a-50/a-51): translateY -140%↔0 + opacity, 500ms easeInOut. */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .nav_dropdown.is-open .nav_wrapper {
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0s linear 0s;
+  }
+  .nav_dropdown.is-open .nav_wrapper {
+    transform: translate(0, 0);
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    z-index: 60;
+  }
+  /* Keep the nav row (logo + inline links + menu trigger) above the panel,
+     so the bar stays visible while the dropdown is open (as on the source). */
+  .navbar_logo-link,
+  .nav_dropdown .nav_links.is-dropdown {
+    position: relative;
+    z-index: 70;
+  }
+
+  /* ── Editorial big-type menu layout ───────────────────────────────────────
+     Left: vertical list of large Anton-SC display links (numbered 01–05).
+     Right: featured image filling the column. */
+  /* Match the panel's horizontal padding to .padding-global so the start of
+     each menu row lines up with the navbar logo (logo left edge = 3.75rem /
+     2rem / 1rem per breakpoint). The source's 1.5rem left the links jutting
+     out past the logo. */
+  .nav_dropdown .nav_wrapper {
+    padding-left: 3.75rem;
+    padding-right: 3.75rem;
+  }
+  .nav_menu-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 3rem;
+    width: 100%;
+    align-items: center;
+  }
+  .nav_menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .nav_menu-link {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.15rem 0;
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .nav_menu-num {
+    flex: none;
+    width: 1.75rem;
+    font-family: var(--_typography---font-family--body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--grey--grey-400);
+    transition: color 0.3s ease;
+  }
+  /* The big display type. The two .text_link_tag copies keep the per-letter
+     hover swap (second copy flows one line below via top:auto + overflow:clip
+     on .link_text-wrap) — only the size changes here. */
+  .nav_menu-link .text_link_tag {
+    font-family: var(--_typography---font-family--headers);
+    font-size: clamp(2rem, 5.5vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--text-color--text-on-primary);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+  /* Hover: slide right + tint to sky-blue (composes with the letter-rise JS). */
+  .nav_menu-link:hover {
+    transform: translateX(0.6rem);
+  }
+  .nav_menu-link:hover .text_link_tag,
+  .nav_menu-link:hover .nav_menu-num,
+  .nav_menu-link.w--current .text_link_tag {
+    color: var(--text-color--text-primary);
+  }
+
+  .nav_menu-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .nav_menu-media .img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Tablet: tighten the gap, slightly smaller type already via clamp. */
+  @media screen and (max-width: 991px) {
+    .nav_dropdown .nav_wrapper {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+    .nav_menu-grid {
+      gap: 2rem;
+    }
+  }
+  /* Mobile (≤767): drop the featured image, list goes full-width. Keep the
+     base top clear, a roomier bottom, and 1.5rem sides. */
+  @media screen and (max-width: 767px) {
+    .nav_dropdown .nav_wrapper {
+      padding-bottom: 2rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .nav_menu-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .nav_menu-media {
+      display: none;
+    }
+    .nav_menu-list {
+      gap: 0.5rem;
+    }
+    .nav_menu-link {
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { SplitText } from 'gsap/SplitText';
+  gsap.registerPlugin(SplitText);
+
+  // Per-letter hover swap on nav links (source IX timeline t-0a1ab51c):
+  // both .text_link_tag copies (the second sits one line below via top:auto +
+  // overflow:clip) slide chars up yPercent -100, staggered left→right, power4.out.
+  function initNavLinkHover() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const wraps = document.querySelectorAll<HTMLElement>('[data-navbar] .link_text-wrap');
+    wraps.forEach((wrap) => {
+      const tags = wrap.querySelectorAll<HTMLElement>('.text_link_tag');
+      if (!tags.length) return;
+      const splits = Array.from(tags).map((t) => new SplitText(t, { type: 'chars' }));
+      // Column-major order so the two copies of each letter move together, L→R.
+      const seq: Element[] = [];
+      const max = Math.max(...splits.map((s) => s.chars.length));
+      for (let i = 0; i < max; i++) for (const s of splits) if (s.chars[i]) seq.push(s.chars[i]);
+      const tl = gsap.to(seq, {
+        yPercent: -100,
+        duration: 0.5,
+        ease: 'power4.out',
+        stagger: { amount: 0.2, from: 'start' },
+        paused: true,
+      });
+      const trigger = wrap.closest('a, [data-nav-dropdown-toggle]') || wrap;
+      trigger.addEventListener('mouseenter', () => tl.play());
+      trigger.addEventListener('mouseleave', () => tl.reverse());
+    });
+  }
+  initNavLinkHover();
+
+  // "menu" dropdown toggle (desktop). Structural interaction, not decorative.
+  function initNavDropdown() {
+    document.querySelectorAll<HTMLElement>('[data-nav-dropdown]').forEach((dd) => {
+      const toggle = dd.querySelector<HTMLElement>('[data-nav-dropdown-toggle]');
+      if (!toggle) return;
+      // Lock page scroll while the dropdown panel is open.
+      const lockScroll = (on: boolean) => {
+        document.documentElement.style.overflow = on ? 'hidden' : '';
+      };
+      const close = () => {
+        dd.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        lockScroll(false);
+      };
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const open = dd.classList.toggle('is-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        lockScroll(open);
+      });
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!dd.contains(e.target as Node)) close();
+      });
+      // Close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+      // Close when a link inside is clicked
+      dd.querySelectorAll('.nav_wrapper a').forEach((a) =>
+        a.addEventListener('click', close)
+      );
+    });
+  }
+  initNavDropdown();
+</script>

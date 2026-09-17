@@ -1,0 +1,41 @@
+/* =============================================================================
+   anim.css — initial (hidden) states for JS-driven entrance animations.
+
+   Every rule is gated on `html.anim-ready`, a class added synchronously in
+   <head> (BaseLayout) ONLY when JavaScript runs and the user has not requested
+   reduced motion. GSAP then overrides these with inline styles as it animates
+   each element in. Net effect:
+     • JS on,  motion ok   → elements start hidden, GSAP reveals them (no FOUC).
+     • JS off / GSAP fails → `.anim-ready` never set → content is fully visible.
+     • reduced motion       → `.anim-ready` never set → content is fully visible.
+
+   Keep these in lock-step with the `fromTo(...)` "from" values in
+   scroll-reveal.ts so there is no jump on the first frame.
+   ============================================================================= */
+
+/* IX2 generic "View" reveal (opacity + translateY 15%). */
+html.anim-ready [data-reveal] {
+  opacity: 0;
+}
+
+/* DESIGNER ADDITION (not in source): opacity + translateY 15% entrance on the
+   detail hero images (episode detail .home_hero-img, blog detail .hero_blog).
+   Gated so it only hides when JS will animate it back in (see initHeroImageReveal). */
+html.anim-ready .home_hero-img,
+html.anim-ready .hero_blog,
+html.anim-ready [data-rise-reveal] {
+  opacity: 0;
+}
+
+/* IX3 hero LOAD entrance (timeline t-60b4c794). */
+html.anim-ready [animation="home-img"] {
+  transform: scale(1.2);
+}
+html.anim-ready [animation="home-text"],
+html.anim-ready [animation="text-description"],
+html.anim-ready [animation="tag"] {
+  opacity: 0;
+}
+html.anim-ready [animation="item"] {
+  transform: scale(0);
+}

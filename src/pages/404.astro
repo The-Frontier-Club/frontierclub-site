@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+// 404 — Not Found (from 404.html). section_not-found + footer. The source had
+// the footer duplicated (Webflow editor artifact) — rendered once here.
+// IX inline initial states stripped (static page). noindex.
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
+  { href: '/episodes', label: 'Episodes' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact Us' },
+];
+---
+<BaseLayout title="Page not found — Lyria" description="The page you’re looking for can’t be found." noindex={true}>
+  <Navbar navLinks={navLinks} logoSrc="/images/Lyria-3.svg" brand="Lyria" />
+
+  <section class="main-wrapper">
+    <div class="section_not-found">
+      <div data-reveal class="not-found_wrapper">
+        <div class="not-found_content">
+          <div class="not-found_header">
+            <h1 class="text-5xl">Page not <em>found</em></h1>
+          </div>
+          <div data-reveal="0.3" class="button-wrapper">
+            <div animation="item">
+              <a href="/" class="play_link w-inline-block">
+                <div class="play_wrap">
+                  <div class="text-decorate">[</div>
+                  <div class="link_text-wrap">
+                    <div class="text_link_tag">go to home</div>
+                    <div class="text_link_tag is-absolute">go to home</div>
+                  </div>
+                  <div class="text-decorate">]</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

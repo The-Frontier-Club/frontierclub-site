@@ -1,0 +1,148 @@
+/* =========================================================================
+   grid-slider.css — responsive grid→slider enhancement (generic, reusable)
+
+   ADDITIVE, source-true. Many Webflow source grids degrade to a plain
+   `display:flex; overflow:auto` drag strip on tablet/mobile (no arrows). We
+   upgrade those to a real Swiper slider WITH arrows below each grid's own
+   degrade breakpoint, while the desktop CSS grid is left exactly as-is and is
+   NEVER driven by Swiper. Init/destroy is handled by grid-slider.ts.
+
+   Two breakpoint families, matching where the SOURCE grid degraded:
+     • default              → slider ≤991 / grid ≥992   [no data-slider-mq]
+     • narrower (4-col etc.) → slider ≤767 / grid ≥768   [data-slider-mq="767"]
+
+   GAP: the desktop grid gap is your component's own value (the director decides
+   it from the source). Set it via the `--grid-slider-gap` custom property on
+   the grid (or hardcode it in your component CSS). It is declared below with a
+   fallback so this file works standalone:
+       .your-grid { --grid-slider-gap: 1rem; }
+
+   Markup contract — see grid-slider.ts header.
+   ========================================================================= */
+
+/* === Family A: default grids — slider ≤991, plain grid ≥992 ============== */
+@media screen and (min-width: 992px) {
+  /* Stay a grid on desktop. Swiper's swiper.css sets .swiper{display:block} and
+     .swiper-wrapper{display:flex}; undo BOTH so the source grid layout applies
+     straight to the cards. Targets WITHOUT a 767 override (the 991 family). */
+  [data-grid-slider]:not([data-slider-mq="767"]).swiper {
+    display: grid;
+    /* ---- GAP-LEAK FIX (evidence: Upmind 2026-06-01, commit 3033030) -------
+       Webflow's stylesheet often carries a rule like `.swiper { grid-gap: xhuge }`
+       (e.g. 2.5rem). The moment you add the `.swiper` opt-in class to a grid,
+       that rule LEAKS in and OVERRIDES the desktop card gap (in Upmind it
+       rendered 40px instead of the intended 1rem across all 6 grids). Reset
+       BOTH axes explicitly here — `:not([data-slider-mq="767"]).swiper` has
+       higher specificity than the bare `.swiper`, so this wins the cascade. */
+    column-gap: var(--grid-slider-gap, 1rem);
+    row-gap: var(--grid-slider-gap, 1rem);
+  }
+  [data-grid-slider]:not([data-slider-mq="767"]) > .swiper-wrapper {
+    display: contents; /* wrapper disappears; cards become direct grid items */
+  }
+  [data-grid-slider]:not([data-slider-mq="767"]) > .arrow-group {
+    display: none; /* no arrows on desktop grid */
+  }
+}
+
+@media screen and (max-width: 991px) {
+  [data-grid-slider]:not([data-slider-mq="767"]).swiper {
+    display: block;
+    overflow: hidden;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  [data-grid-slider]:not([data-slider-mq="767"]) > .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+  [data-grid-slider]:not([data-slider-mq="767"]) > .swiper-wrapper > .swiper-slide {
+    height: auto;
+    flex-shrink: 0;
+  }
+  [data-grid-slider]:not([data-slider-mq="767"]) > .arrow-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+  }
+}
+
+/* === Family B: narrower grids — slider ≤767, plain grid ≥768 ============= */
+@media screen and (min-width: 768px) {
+  [data-grid-slider][data-slider-mq="767"].swiper {
+    display: grid;
+    /* Same gap-leak fix as Family A — neutralize Webflow's `.swiper{grid-gap}`. */
+    column-gap: var(--grid-slider-gap, 1rem);
+    row-gap: var(--grid-slider-gap, 1rem);
+  }
+  [data-grid-slider][data-slider-mq="767"] > .swiper-wrapper {
+    display: contents;
+  }
+  [data-grid-slider][data-slider-mq="767"] > .arrow-group {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  [data-grid-slider][data-slider-mq="767"].swiper {
+    display: block;
+    overflow: hidden;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  [data-grid-slider][data-slider-mq="767"] > .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+  [data-grid-slider][data-slider-mq="767"] > .swiper-wrapper > .swiper-slide {
+    height: auto;
+    flex-shrink: 0;
+  }
+  [data-grid-slider][data-slider-mq="767"] > .arrow-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+  }
+}
+
+/* ---- Preserve source item display under Swiper -------------------------- */
+/* Swiper's swiper.css sets .swiper-slide{display:block}, which can flatten a
+   source card whose layout relies on `display:flex; flex-flow:column` (its
+   internal row-gap collapses to 0 on all viewports). If your card is a flex
+   column, restore it with HIGHER specificity than `.swiper-slide`. Replace
+   `.your-item` with your card class and the gap with the source value:
+
+   .your-item.swiper-slide {
+     display: flex;
+     flex-direction: column;
+   }
+*/
+
+/* ---- Arrow buttons ------------------------------------------------------ */
+/* Swiper's swiper.css absolutely-positions .swiper-button-prev/next and gives
+   them their own ::after glyph. Re-anchor them into the static arrow-group row
+   and suppress the default glyph so YOUR arrow SVGs show (match the look of any
+   other slider arrows in the template). Breakpoint-agnostic: only ever visible
+   inside a displayed .arrow-group (gated above). Tune width/height to taste. */
+[data-grid-slider] > .arrow-group > .swiper-button-prev,
+[data-grid-slider] > .arrow-group > .swiper-button-next {
+  position: static;
+  margin: 0;
+  inset: auto;
+  width: 3rem;
+  height: 3rem;
+}
+[data-grid-slider] > .arrow-group > .swiper-button-prev::after,
+[data-grid-slider] > .arrow-group > .swiper-button-next::after {
+  content: none;
+}
+[data-grid-slider] > .arrow-group > .swiper-button-disabled {
+  opacity: 0.35;
+  cursor: default;
+}

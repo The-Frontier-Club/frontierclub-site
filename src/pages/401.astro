@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 401 — password-gate page (from 401.html). Standalone utility layout (no
+// navbar/footer in source). Form is a STUB: no real auth wiring. noindex.
+---
+<BaseLayout title="Protected page" description="This page is password protected." noindex={true}>
+  <div class="utility-page_component">
+    <div class="utility-page_wrapper w-password-page w-form">
+      <form id="email-form" name="email-form" data-name="Email Form" class="utility-page_form w-password-page" onsubmit="return false;">
+        <img alt="" width="106" src="https://d3e54v103j8qbb.cloudfront.net/static/utility-lock.ae54711958.svg" class="utility-page_image">
+        <h3>Protected Page</h3>
+        <input class="form_input w-password-page w-input" autofocus maxlength="256" name="pass" data-name="field" placeholder="Enter your password" type="password" id="pass">
+        <input data-wait="Please wait..." type="submit" class="button w-password-page w-button" value="Submit">
+        <div class="form_message-error w-password-page w-form-fail">
+          <div>Incorrect password. Please try again.</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</BaseLayout>
