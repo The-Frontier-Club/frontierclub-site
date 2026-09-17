@@ -267,17 +267,17 @@ h1, h2, h3, h4, h5, h6,
    trading exact width-matching for something you can actually read. */
 @media screen and (max-width: 479px) {
 
-  .hero_intro-copy {
-    max-width: 100%;
-    padding: 1.25rem 1.25rem 1.5rem;
-  }
+.hero_intro-copy {
+  max-width: 100%;
+  padding: 1.25rem 0.75rem 1.5rem;
+}
 
-  .hero_intro-copy > div {
-    font-size: 1.05rem;
-    line-height: 1.35;
-    letter-spacing: 0;
-    text-align: center;
-  }
+.hero_intro-copy > div {
+  font-size: 0.9rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-align: center;
+}
 
   .about_card-caption {
     font-size: 1.35rem;
