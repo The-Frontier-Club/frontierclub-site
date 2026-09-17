@@ -1,5 +1,5 @@
 ---
-// Footer.astro — from the Lyria source footer.
+// Footer.astro - from the Lyria source footer.
 // Variant quick-links collapsed to real routes. Seller marketing links KEPT
 // (Rule 42). Giant LYRIA wordmark marquee kept (CSS marquee, .footer_track).
 // IX initial states stripped.
@@ -25,7 +25,7 @@ const sellerLinks = [
 const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/');
 
-// Copyright year — resolved at build time so each deploy shows the current year.
+// Copyright year - resolved at build time so each deploy shows the current year.
 const year = new Date().getFullYear();
 ---
 <section class="footer">

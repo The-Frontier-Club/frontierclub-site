@@ -4,7 +4,7 @@ import type { SwiperOptions } from 'swiper/types';
 import 'swiper/css';
 
 // =============================================================================
-// grid-slider.ts — responsive grid → slider mechanism (generic, reusable)
+// grid-slider.ts - responsive grid → slider mechanism (generic, reusable)
 //
 // PROBLEM IT SOLVES
 // In many Webflow source templates a card grid has NO real slider: on
@@ -14,7 +14,7 @@ import 'swiper/css';
 // breakpoint, while leaving the desktop CSS grid completely untouched
 // (≥breakpoint → plain grid, NO Swiper driving it).
 //
-// MARKUP CONTRACT (per target grid — see grid-slider.css for the CSS side):
+// MARKUP CONTRACT (per target grid - see grid-slider.css for the CSS side):
 //   <div class="<grid-class> swiper" data-grid-slider data-gap="16"
 //        [data-slider-mq="767"]>
 //     <div class="swiper-wrapper" role="list">          ← role="list" goes HERE
@@ -27,21 +27,21 @@ import 'swiper/css';
 //     </div>
 //   </div>
 //
-//   • data-grid-slider — opt-in marker (required). The script targets only these.
-//   • data-gap         — spaceBetween in px during the swipe transition
+//   • data-grid-slider - opt-in marker (required). The script targets only these.
+//   • data-gap         - spaceBetween in px during the swipe transition
 //                        (defaults to 16). The DESKTOP grid gap is set in CSS,
-//                        NOT here — this only affects the slider state.
-//   • data-spv         — slidesPerView. Read but defaults to 1 (one full card,
+//                        NOT here - this only affects the slider state.
+//   • data-spv         - slidesPerView. Read but defaults to 1 (one full card,
 //                        no peek, since arrows already signal it's a slider).
 //                        Set to a number/`"auto"` if a peek is desired.
-//   • data-slider-mq   — per-target max-width breakpoint in px (default 991).
+//   • data-slider-mq   - per-target max-width breakpoint in px (default 991).
 //                        The CSS gate keys off the SAME value via attribute
 //                        selectors, so both must agree.
 //
 // MECHANISM
 // One matchMedia per distinct breakpoint. Below the breakpoint → init Swiper on
 // every opted-in target; at/above → destroy it so the desktop grid CSS regains
-// control. No autoplay — manual/drag only (respects prefers-reduced-motion
+// control. No autoplay - manual/drag only (respects prefers-reduced-motion
 // implicitly: nothing animates on its own).
 // =============================================================================
 
@@ -55,7 +55,7 @@ function initOne(el: HTMLElement) {
   if (instances.has(el)) return;
 
   // Default: exactly ONE full card at 100% of the slider's content width at all
-  // active breakpoints — NO peek of the next card, since the arrows already
+  // active breakpoints - NO peek of the next card, since the arrows already
   // signal it's a slider. Override per-target with `data-spv` (number or "auto")
   // if a peek is wanted. `data-gap` (spaceBetween, px) only shows during the
   // swipe transition because only one card is visible at rest with spv=1.

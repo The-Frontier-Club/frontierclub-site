@@ -1,5 +1,5 @@
 ---
-// RelatedBlogsSlider.astro — "Article of the Week" related posts carousel for
+// RelatedBlogsSlider.astro - "Article of the Week" related posts carousel for
 // /blog/[slug]. Replaces the source Webflow `w-slider` (section_latest) with
 // Swiper 11, mirroring the (approved) RelatedEpisodesSlider:
 //   - source data-autoplay="false" → no autoplay; no loop (manual slider).
@@ -7,7 +7,7 @@
 //   - slidesPerView: portrait 1, landscape & tablet 1.5, desktop 2.
 //   - card image gets the source's filter: contrast(70%).
 // CLICKABILITY (owner decision 2026-06-16, source-faithful): like the blog list
-// card, the WHOLE card is one link — source wraps it in <a class="article_card">
+// card, the WHOLE card is one link - source wraps it in <a class="article_card">
 // and "Read more" is decorative text (a <div>), not a nested link. Kept in sync
 // with BlogsSection so both `article_card` uses behave identically.
 import type { CollectionEntry } from 'astro:content';
@@ -60,7 +60,7 @@ const { posts } = Astro.props;
     width: 100% !important;
     overflow: visible !important;
   }
-  /* Arrows at the bottom-left, right under the slides — part of the slider. */
+  /* Arrows at the bottom-left, right under the slides - part of the slider. */
   .related_arrows {
     display: flex;
     justify-content: flex-start;

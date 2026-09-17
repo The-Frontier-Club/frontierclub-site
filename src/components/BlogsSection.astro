@@ -1,20 +1,20 @@
 ---
-// BlogsSection.astro — the blog card grid (source `team_list is-hero-cards` /
+// BlogsSection.astro - the blog card grid (source `team_list is-hero-cards` /
 // `card_article-list` from blogs.html). CMS Blogs, sorted by order.
 //
 // CLICKABILITY (owner decision 2026-06-16, source-faithful): the WHOLE card is
-// one link — the source wraps everything in a single <a class="article_card">,
+// one link - the source wraps everything in a single <a class="article_card">,
 // and "Read more" is decorative text (a <div>), NOT a nested link (HTML forbids
 // <a> inside <a>). We mirror that: the card root anchor goes to /blog/[slug] and
 // "Read more" is a plain <div>. This aligns with the hover affordance (the
 // "View More" pill + cursor-follow + image contrast already signal the card is
 // clickable). NOTE: this intentionally diverges from Catalis, where blog cards
-// are deliberately NOT clickable — Lyria follows its own source here.
+// are deliberately NOT clickable - Lyria follows its own source here.
 // IX hooks / inline opacity:0 / transform initial states stripped; the
 // `animation` attribute hooks are preserved as data-less markers where present.
 import { getCollection } from 'astro:content';
 
-// Source/live shows the posts in descending `order` (newest first) — the
+// Source/live shows the posts in descending `order` (newest first) - the
 // reverse of the field's ascending value, matching lyria-temlis.webflow.io/blogs.
 const blogs = (await getCollection('blogs')).sort(
   (a, b) => b.data.order - a.data.order

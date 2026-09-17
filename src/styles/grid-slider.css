@@ -1,5 +1,5 @@
 /* =========================================================================
-   grid-slider.css — responsive grid→slider enhancement (generic, reusable)
+   grid-slider.css - responsive grid→slider enhancement (generic, reusable)
 
    ADDITIVE, source-true. Many Webflow source grids degrade to a plain
    `display:flex; overflow:auto` drag strip on tablet/mobile (no arrows). We
@@ -17,10 +17,10 @@
    fallback so this file works standalone:
        .your-grid { --grid-slider-gap: 1rem; }
 
-   Markup contract — see grid-slider.ts header.
+   Markup contract - see grid-slider.ts header.
    ========================================================================= */
 
-/* === Family A: default grids — slider ≤991, plain grid ≥992 ============== */
+/* === Family A: default grids - slider ≤991, plain grid ≥992 ============== */
 @media screen and (min-width: 992px) {
   /* Stay a grid on desktop. Swiper's swiper.css sets .swiper{display:block} and
      .swiper-wrapper{display:flex}; undo BOTH so the source grid layout applies
@@ -32,7 +32,7 @@
        (e.g. 2.5rem). The moment you add the `.swiper` opt-in class to a grid,
        that rule LEAKS in and OVERRIDES the desktop card gap (in Upmind it
        rendered 40px instead of the intended 1rem across all 6 grids). Reset
-       BOTH axes explicitly here — `:not([data-slider-mq="767"]).swiper` has
+       BOTH axes explicitly here - `:not([data-slider-mq="767"]).swiper` has
        higher specificity than the bare `.swiper`, so this wins the cascade. */
     column-gap: var(--grid-slider-gap, 1rem);
     row-gap: var(--grid-slider-gap, 1rem);
@@ -70,11 +70,11 @@
   }
 }
 
-/* === Family B: narrower grids — slider ≤767, plain grid ≥768 ============= */
+/* === Family B: narrower grids - slider ≤767, plain grid ≥768 ============= */
 @media screen and (min-width: 768px) {
   [data-grid-slider][data-slider-mq="767"].swiper {
     display: grid;
-    /* Same gap-leak fix as Family A — neutralize Webflow's `.swiper{grid-gap}`. */
+    /* Same gap-leak fix as Family A - neutralize Webflow's `.swiper{grid-gap}`. */
     column-gap: var(--grid-slider-gap, 1rem);
     row-gap: var(--grid-slider-gap, 1rem);
   }

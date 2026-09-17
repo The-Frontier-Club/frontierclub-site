@@ -1,19 +1,19 @@
 ---
-// Navbar.astro — Lyria faithful navbar.
+// Navbar.astro - Lyria faithful navbar.
 // =============================================================================
 // Logo + a single "menu" dropdown panel (.nav_links.is-dropdown → .nav_wrapper),
-// OR — when `applyHref` is passed — a direct external CTA link in its place
+// OR - when `applyHref` is passed - a direct external CTA link in its place
 // (home: no menu, just "[APPLY NOW]" straight to the application form). The
 // trigger and each dropdown link carry the double .text_link_tag per-letter
 // hover swap. The panel slides down full-width (translateY -140%↔0, 500ms
-// ease-in-out) — that open/close + transition is the only geometry kept from
+// ease-in-out) - that open/close + transition is the only geometry kept from
 // the source.
 //
-// DROPDOWN LAYOUT — editorial big-type menu (redesigned 2026-06-17): the source
+// DROPDOWN LAYOUT - editorial big-type menu (redesigned 2026-06-17): the source
 // shipped a 3-column mega-menu built for 15+ links, which read half-empty with
 // our 5 routes. Replaced with a vertical list of large Anton-SC display links
-// (numbered 01–05), left-aligned, with the featured image filling the right
-// column — leaning into the template's giant-display-type identity instead of
+// (numbered 01-05), left-aligned, with the featured image filling the right
+// column - leaning into the template's giant-display-type identity instead of
 // padding empty grid cells. Per-letter hover swap preserved (.link_text-wrap /
 // .text_link_tag), plus a subtle slide + sky-blue tint. Image hidden ≤767px.
 //
@@ -24,7 +24,7 @@ interface NavLink {
   href: string;
   label: string;
   /** Set true for links that leave the site (e.g. an external application
-      form) — renders target="_blank" + rel="noopener" so the new tab can't
+      form) - renders target="_blank" + rel="noopener" so the new tab can't
       access this page via `window.opener` (a security best-practice for any
       link opening in a new tab). */
   external?: boolean;
@@ -36,7 +36,7 @@ interface Props {
   logoSrc?: string;
   brand?: string;
   /** When set, the "[APPLY NOW]" trigger becomes a direct external link to
-      this URL instead of the "menu" dropdown toggle — home-only, since the
+      this URL instead of the "menu" dropdown toggle - home-only, since the
       dropdown is still the only way to reach the other nav links (and, on
       the orphaned pages, the only way to navigate between routes at all). */
   applyHref?: string;
@@ -62,7 +62,7 @@ const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/')
         </a>
         <div class="nav_container">
           {applyHref ? (
-            /* Direct CTA — no menu. */
+            /* Direct CTA - no menu. */
             <a
               href={applyHref}
               target="_blank"
@@ -136,7 +136,7 @@ const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/')
 <style>
   /* "menu" dropdown open/close. The source slides .nav_wrapper down from the top
      (base state is translateY(-140%) in webflow.css); open = translateY(0).
-     .nav_wrapper is absolute against .navbar (full-width panel) — no positioning
+     .nav_wrapper is absolute against .navbar (full-width panel) - no positioning
      context on .nav_dropdown so it spans the whole bar like the source. */
   .nav_dropdown .nav_wrapper {
     /* Source NavBar Open/Close (a-50/a-51): translateY -140%↔0 + opacity, 500ms easeInOut. */
@@ -164,7 +164,7 @@ const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/')
   }
 
   /* ── Editorial big-type menu layout ───────────────────────────────────────
-     Left: vertical list of large Anton-SC display links (numbered 01–05).
+     Left: vertical list of large Anton-SC display links (numbered 01-05).
      Right: featured image filling the column. */
   /* Match the panel's horizontal padding to .padding-global so the start of
      each menu row lines up with the navbar logo (logo left edge = 3.75rem /
@@ -207,7 +207,7 @@ const isCurrent = (href: string) => current === (href.replace(/\/$/, '') || '/')
   }
   /* The big display type. The two .text_link_tag copies keep the per-letter
      hover swap (second copy flows one line below via top:auto + overflow:clip
-     on .link_text-wrap) — only the size changes here. */
+     on .link_text-wrap) - only the size changes here. */
   .nav_menu-link .text_link_tag {
     font-family: var(--_typography---font-family--headers);
     font-size: clamp(2rem, 5.5vw, 3.4rem);

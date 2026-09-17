@@ -105,7 +105,7 @@ const siteSchema = [
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 
     <!-- Arm the entrance-animation initial states (anim.css) before first paint,
-         but only when JS runs and motion is allowed — so non-JS / reduced-motion
+         but only when JS runs and motion is allowed - so non-JS / reduced-motion
          users never get the hidden states. -->
     <script is:inline>
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

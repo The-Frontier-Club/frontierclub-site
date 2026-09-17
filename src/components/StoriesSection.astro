@@ -1,5 +1,5 @@
 ---
-// StoriesSection.astro — "Listener Stories" (section_stories) quote block.
+// StoriesSection.astro - "Listener Stories" (section_stories) quote block.
 // animation="highlight" hook kept. Reveal stagger (`delay`) differs per page in
 // the source, so it's passed in (defaults 0 = no stagger → preserves episodes).
 // Home decoded values: headline 100, listener 100, quote1 100, quote2 200.
@@ -17,7 +17,7 @@ interface Props {
   /** Section heading. Pass `null` to render no heading at all (home has
       none); other pages (episode detail/list) keep the default below. */
   heading?: string | null;
-  /** Show the "become a founding member" CTA below the quote. Home-only —
+  /** Show the "become a founding member" CTA below the quote. Home-only -
       an application prompt doesn't belong on the episode pages. */
   showApplyButton?: boolean;
   /** The two lines of body copy. Defaults to the placeholder listener
@@ -28,7 +28,7 @@ interface Props {
       placeholder listener testimonial; home also keeps it on for its
       Mission 200 statement, by request. */
   isTestimonial?: boolean;
-  /** Small Weird Horses aside above the section (home: "mission") — a
+  /** Small Weird Horses aside above the section (home: "mission") - a
       handwritten label, independent of (and unrelated to) `heading`. */
   preLabel?: string;
 }
@@ -39,7 +39,7 @@ const {
   heading = 'Traveler Stories',
   showApplyButton = false,
   line1 = "I went in expecting a trip. I came back having actually changed how I think about risk.",
-  line2 = 'The group was small enough that it never felt like a tour — it felt like something we did together',
+  line2 = 'The group was small enough that it never felt like a tour - it felt like something we did together',
   isTestimonial = true,
   preLabel,
 } = Astro.props;

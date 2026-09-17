@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6,
    Everything else on the page (tags, buttons/links, footer links, body
    paragraphs/descriptions) was inheriting the lime accent color from body
    by default. Set those specifically to white. Anton/Weird Horses headings
-   are untouched here — they keep the lime accent unless a specific instance
+   are untouched here - they keep the lime accent unless a specific instance
    (like the hero headline) overrides it on its own. */
 .text_tag,
 .text_link_tag,
@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* --- Tag treatment: kerning + case ---
-   .text_tag carries `letter-spacing: .16em` in the merged stylesheet — wide
+   .text_tag carries `letter-spacing: .16em` in the merged stylesheet - wide
    tracking meant for a short all-caps eyebrow label. That much tracking
    read as loose, uneven kerning on a full sentence, so it's tightened to
    match the rest of the site's Inter body text. Tags are still meant to
@@ -66,7 +66,7 @@ h1, h2, h3, h4, h5, h6,
 
 /* --- Secondary display font: Weird Horses ---
    Self-hosted, not a Fontsource package. Use sparingly via .font-secondary
-   (or the --font-secondary variable directly) for specific accent moments —
+   (or the --font-secondary variable directly) for specific accent moments -
    not a wholesale swap of the heading font. */
 @font-face {
   font-family: 'Weird Horses';
@@ -89,7 +89,7 @@ h1, h2, h3, h4, h5, h6,
    lines like normal text rather than bleeding off the viewport edges.
    The second line (Weird Horses) sits pulled up into the first line's
    line-box via a negative margin, so the two overlap rather than just
-   stacking — the "this isn't for you" rebuttal reads as layered underneath
+   stacking - the "this isn't for you" rebuttal reads as layered underneath
    the main statement, not as a separate line below it. */
 .hero_wordmark {
   display: flex;
@@ -98,7 +98,7 @@ h1, h2, h3, h4, h5, h6,
   text-align: center;
   /* The hero video sits in an absolutely-positioned layer (.hero_header-img,
      inset:0). Positioned elements always paint above unpositioned in-flow
-     siblings in CSS, regardless of DOM order — so without its own position,
+     siblings in CSS, regardless of DOM order - so without its own position,
      this text would render, but invisibly, behind the video. */
   position: relative;
   z-index: 1;
@@ -116,12 +116,12 @@ h1, h2, h3, h4, h5, h6,
 .hero_headline-sub {
   font-size: clamp(2.75rem, 7.5vw, 6rem);
   line-height: 1;
-  margin-top: -0.2em;
+  margin-top: 0.15em;
   position: relative;
   z-index: 1;
 }
 /* Same soft shadow as the headline above, scoped to the hero's paragraph
-   specifically — .max-description is shared with the Trip section, which
+   specifically - .max-description is shared with the Trip section, which
    sits on a solid dark background and doesn't need it. */
 .hero_bottom .max-description {
   text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
@@ -132,7 +132,7 @@ h1, h2, h3, h4, h5, h6,
    than the original SVG wordmarks this template was built around, so the
    existing rules don't fit it correctly:
    - .navbar_logo had NO width/height constraint at desktop size at all (the
-     old SVG's own intrinsic dimensions were already nav-sized) — this PNG's
+     old SVG's own intrinsic dimensions were already nav-sized) - this PNG's
      real pixel size would render huge and overflow the navbar without one.
    - .footer_logo's box (below) was sized for the old logo's proportions too,
      with the same cover-cropping issue. */
@@ -141,7 +141,7 @@ h1, h2, h3, h4, h5, h6,
   width: auto;
 }
 /* .footer_logo's box (6.3rem x 3rem, ~2.1:1) was sized for the old logo's
-   proportions too — same object-fit: cover cropping issue as above, but
+   proportions too - same object-fit: cover cropping issue as above, but
    worse: the box is small enough that cover crops it down to an illegible
    fragment ("RONTIER" only, mid-word). Widening the box to match this
    logo's real ~6.2:1 aspect ratio fits it in full, not just avoids cropping. */
@@ -181,12 +181,12 @@ h1, h2, h3, h4, h5, h6,
 /* --- Privacy policy body copy: opt out of the site-wide uppercase/lime
    treatment ---
    There's no existing "readable long-form text" style in this template to
-   reuse — .text-rich-text/.w-richtext (used for blog/episode body copy too)
+   reuse - .text-rich-text/.w-richtext (used for blog/episode body copy too)
    don't reset text-transform, so ALL body text inherits the global
    `body { text-transform: uppercase; color: var(--text-color--text-primary) }`
    rule. That's the right choice for punchy marketing headlines, wrong for a
    legal document people need to actually read carefully. Scoped here to
-   .privacy-content only — not changed site-wide, since blog/episode copy
+   .privacy-content only - not changed site-wide, since blog/episode copy
    wasn't part of this task and shouldn't change without a separate look. */
 .privacy-content {
   text-transform: none;
@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5, h6,
 
 /* --- Founders "110" stat card ---
    The source .about_card is `flex-flow: row`, built for a number sitting
-   beside short label text — that put "countries explored" next to "110"
+   beside short label text - that put "countries explored" next to "110"
    instead of underneath it. Stack them instead. */
 .about_card {
   flex-flow: column;
@@ -248,7 +248,7 @@ h1, h2, h3, h4, h5, h6,
 }
 /* Mobile portrait: matching "110"'s width on ONE line means shrinking
    "countries explored" (18 characters vs. 3) down to an unreadably tiny
-   size. Let it wrap across two lines instead, at a fixed, legible size —
+   size. Let it wrap across two lines instead, at a fixed, legible size -
    trading exact width-matching for something you can actually read. */
 @media screen and (max-width: 479px) {
   .about_card-caption {
@@ -269,7 +269,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* --- "Stay in the know" cards: mobile-only shrink ---
-   .plataform_name's clamp() bottoms out at 1.75rem — big enough that
+   .plataform_name's clamp() bottoms out at 1.75rem - big enough that
    "[ join the community ]" and "[ sign up for updates ]" wrap with just
    the closing "]" stranded on its own line at phone widths. */
 @media screen and (max-width: 479px) {
@@ -281,7 +281,7 @@ h1, h2, h3, h4, h5, h6,
 /* --- Gap between the "Dare to say yes" marquee and The Trip: mobile fix ---
    The merged stylesheet's --_sizes---padding-section--medium token actually
    goes back UP to 5rem at the ≤479px breakpoint, after shrinking to 3rem at
-   ≤767px — a step backwards, not a further reduction. That's what made this
+   ≤767px - a step backwards, not a further reduction. That's what made this
    specific gap (the Trip section's own opening spacer) balloon on phones.
    Scoped to just this one spacer, not the token everywhere else it's used. */
 @media screen and (max-width: 479px) {
@@ -291,7 +291,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* --- Trip highlight cards ---
-   Deliberately NOT built on .card_latest-item / .play_link — those are
+   Deliberately NOT built on .card_latest-item / .play_link - those are
    Webflow's *linking* card patterns (they carry hover/click affordances
    that imply "go somewhere"). These cards show, they don't navigate. */
 .highlight-grid {
@@ -307,7 +307,7 @@ h1, h2, h3, h4, h5, h6,
   overflow: hidden;
   /* NOT --bg-color--bg-secondary: that token is the same grey as
      .text-color-secondary (the description text below), which made the
-     text invisible — same color on same color. Using a translucent white
+     text invisible - same color on same color. Using a translucent white
      tint over the dark page background instead, so the description
      text's muted grey actually has something to contrast against. */
   background: rgba(255, 255, 255, 0.05);
@@ -339,7 +339,7 @@ h1, h2, h3, h4, h5, h6,
   justify-content: space-between;
   align-items: center;
 }
-/* .h6 has no color of its own (inherits the page's lime default) — white
+/* .h6 has no color of its own (inherits the page's lime default) - white
    here specifically, per request. */
 .trip_more {
   color: var(--text-color--text-on-primary);
@@ -351,7 +351,7 @@ h1, h2, h3, h4, h5, h6,
    right after someone's read what the trip actually is. */
 .section_apply-banner {
   background-color: var(--bg-color--bg-primary);
-  /* Same dark ink used elsewhere on lime (e.g. "Stay in the know") — the
+  /* Same dark ink used elsewhere on lime (e.g. "Stay in the know") - the
      steps list below the button relies on inheriting this rather than
      each line coloring itself. */
   color: var(--text-color--text-subtle);
@@ -363,7 +363,7 @@ h1, h2, h3, h4, h5, h6,
   gap: 2.5rem;
 }
 /* Same "circle rises from below, fills the box" hover as the Stay-in-the-know
-   cards (.card_media/.card-overlay) — same size ratio, position, easing and
+   cards (.card_media/.card-overlay) - same size ratio, position, easing and
    duration, just inverted colors (lime circle instead of dark, so the dark
    text stays readable once it rises) and clipped to the button's own box
    instead of a whole card row. */
@@ -388,7 +388,7 @@ h1, h2, h3, h4, h5, h6,
   width: 200%;
   height: 300%;
   border-radius: 100%;
-  /* White, not the page's own lime — the card version's overlay swaps to
+  /* White, not the page's own lime - the card version's overlay swaps to
      whatever contrasts with ITS section; on this button lime would exactly
      match the banner behind it and the button would visually disappear on
      hover instead of standing out. */
@@ -404,7 +404,7 @@ h1, h2, h3, h4, h5, h6,
   transform: translateY(0);
 }
 /* ::before is positioned (absolute), so it paints above the button's own
-   plain text regardless of DOM order — same rule that bit the hero video
+   plain text regardless of DOM order - same rule that bit the hero video
    overlap earlier. Give the text its own position so it stacks on top. */
 .apply-banner_button-text {
   position: relative;
@@ -451,7 +451,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* --- One-pager nav: make the navbar sticky ---
-   Source .navbar is `position: absolute` (webflow.css) — an overlay meant to
+   Source .navbar is `position: absolute` (webflow.css) - an overlay meant to
    sit on top of the hero image on a fresh page load, then scroll away with
    the rest of the page. For a single scrolling page with anchor links, the
    nav needs to stay reachable the whole way down, so it's promoted to
@@ -459,7 +459,7 @@ h1, h2, h3, h4, h5, h6,
 :root {
   --navbar-height: 5.5rem;
 }
-/* The navbar bar is a solid, fully opaque rectangle — pinned in place by
+/* The navbar bar is a solid, fully opaque rectangle - pinned in place by
    `sticky` so the logo and [APPLY NOW] button always sit on a consistent
    background, with nothing from the page ever showing through behind them.
    A real box-shadow (not a painted gradient overlay) casts underneath it,
@@ -474,7 +474,7 @@ h1, h2, h3, h4, h5, h6,
 }
 /* --- Hero video: fill the gap above it ---
    The navbar is `position: sticky` (above), which still reserves its own
-   height at the top of the page's normal flow — so the hero section (and
+   height at the top of the page's normal flow - so the hero section (and
    its full-bleed video) started right below that reserved strip, leaving a
    solid-color gap at the very top of the page instead of the video running
    edge to edge. Pulling the hero section up by exactly the navbar's height
@@ -502,7 +502,7 @@ html {
 }
 
 /* --- Episode-detail hero "listen on" links.
-   Desktop (3-col grid): Spotify left, Youtube center, Apple right — the source
+   Desktop (3-col grid): Spotify left, Youtube center, Apple right - the source
    per-instance w-node layout, recreated here so the markup stays clean. */
 @media screen and (min-width: 992px) {
   .plataform_wrap > *:nth-child(2) { justify-self: center; }
@@ -529,7 +529,7 @@ html {
 }
 
 /* =============================================================================
-   Hovers (Phase S3, Lote 2) — ported from Webflow IX2.
+   Hovers (Phase S3, Lote 2) - ported from Webflow IX2.
    ============================================================================= */
 
 /* Portfolio card image hover (source a-52/a-53). The "View More" pill
@@ -567,7 +567,7 @@ html {
   border-bottom-color: var(--bg-color--bg-default);
 }
 
-/* is-second variant (about / episodes — source a-61/a-62 "Hover Card V2"):
+/* is-second variant (about / episodes - source a-61/a-62 "Hover Card V2"):
    inverted from the default. The name + icon REST at accent (.card_media.is-second
    color) and DARKEN to subtle on hover; the bottom border goes grey. The overlay
    rise and the name +2rem / icon -2rem moves are shared with the default rules. */
@@ -592,7 +592,7 @@ html {
 
 /* Related-BLOG slider card hover (detail_blogs.html a-44/a-45, on .article_card):
    same scale 1.02 as .card_item, but the blog related card is .article_card and
-   has NO "View More" pill (the source omits view_wrap/view_button here — unlike
+   has NO "View More" pill (the source omits view_wrap/view_button here - unlike
    the blog LIST card, which uses a-52/a-53). Scoped to the related-blogs slider
    so the LIST `.article_card` (whose hover is the view pill) is untouched. */
 .related-blogs-swiper .article_card {
@@ -603,7 +603,7 @@ html {
   transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* outQuad (in) */
 }
 
-/* About "Echoes in frame" — PORTRAIT/mobile (≤767px): the source's asymmetric
+/* About "Echoes in frame" - PORTRAIT/mobile (≤767px): the source's asymmetric
    2×2 grid overflows and shrinks the small images. Owner wants the 4 images to
    stack into a single column, each at its NATURAL aspect ratio and at a generous
    size (full width). Flatten each row's 2-col grid into a column and let the
@@ -631,7 +631,7 @@ html {
   }
 }
 
-/* About pull-quote — PORTRAIT (≤767px): the source staggers the 2nd line with a
+/* About pull-quote - PORTRAIT (≤767px): the source staggers the 2nd line with a
    12.5% left indent, which looks unbalanced on a narrow screen. Center both lines
    and drop the indent so the quote reads balanced on mobile. Desktop/tablet keep
    the staggered design. */
@@ -668,3 +668,26 @@ html {
     row-gap: 1rem;
   }
 }
+
+/* --- Hero bottom bar --- */
+.hero_bottom { position: absolute; bottom: 0; left: 0; right: 0; background: var(--base--black); height: 5.5rem; display: flex; align-items: center; z-index: 2; }
+.hero_bottom .max-description { color: var(--base--sky-blue); text-shadow: none; max-width: none; width: 100%; font-size: .8125rem; line-height: 1.3; }
+.hero_bottom .hero_grid { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+.hero_bottom .padding-top { display: none; }
+.nav_container { display: none; }
+.hero_cta { display: flex; justify-content: center; margin-top: 1.5rem; }
+.hero_cta-link { display: inline-block; background: var(--base--sky-blue); color: var(--base--black); font-family: var(--_typography---font-family--headers); font-size: 1.125rem; letter-spacing: .05em; padding: .85rem 2.5rem; border-radius: 999px; text-decoration: none; }
+.hero_cta { display: flex; justify-content: center; margin-top: 1.5rem; }
+.hero_cta-link { display: inline-block; background: var(--base--sky-blue); color: var(--base--black); font-family: var(--_typography---font-family--headers); font-size: 1.125rem; letter-spacing: .05em; padding: .85rem 2.5rem; border-radius: 999px; text-decoration: none; }
+.hero_canvas { min-height: 109svh; height: 109svh; padding-top: 6rem; padding-bottom: 0; }
+.hero_bottom .padding-global, .hero_bottom .padding-section-medium { padding-top: 0; padding-bottom: 0; }
+.hero_bottom .padding-global, .hero_bottom .hero_grid, .hero_bottom .max-description { padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; } .hero_bottom .hero_grid { justify-content: center; }
+.hero_bottom .padding-top { display: none !important; } .hero_bottom .hero_grid { height: 100%; justify-content: center; gap: 0; }
+.hero_bottom [animation="text-bottom"], .hero_bottom [animation="text-description"] { transform: none !important; translate: none !important; }
+.hero_bottom .max-description { position: relative; top: -14px; }
+.hero_bottom .max-description { font-family: var(--_typography---font-family--headers); text-transform: uppercase; letter-spacing: .04em; font-size: .75rem; white-space: nowrap; }
+.hero_bottom .max-description { color: var(--new-base---white) !important; }
+.hero_bottom .hero_grid { align-items: center !important; } .hero_bottom .max-description { text-align: center; }
+.hero_bottom { justify-content: center !important; }
+.hero_bottom .padding-global { width: 100% !important; max-width: none !important; padding-left: 0 !important; padding-right: 0 !important; display: flex !important; justify-content: center !important; }
+.hero_bottom .hero_grid { justify-content: center !important; align-items: center !important; width: 100% !important; }

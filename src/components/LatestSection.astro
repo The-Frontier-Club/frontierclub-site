@@ -1,5 +1,5 @@
 ---
-// LatestSection.astro — "Fresh on the air" (section_latest), CMS Episodes.
+// LatestSection.astro - "Fresh on the air" (section_latest), CMS Episodes.
 // Mirrors the source w-dyn-list: one .card_latest-item per episode.
 import { getCollection } from 'astro:content';
 
@@ -19,7 +19,7 @@ const episodes = (await getCollection('episodes')).sort(
             </div>
           </div>
           <h2 class="h2_clamp">Applications closing soon</h2>
-          <div class="text-color-secondary">A handful of spots left across this year's trips. Reviewed by hand, not first-come-first-served — tell us why you'd be a good fit.</div>
+          <div class="text-color-secondary">A handful of spots left across this year's trips. Reviewed by hand, not first-come-first-served - tell us why you'd be a good fit.</div>
         </div>
         <div class="cards_container">
           <div class="card_wrapp">

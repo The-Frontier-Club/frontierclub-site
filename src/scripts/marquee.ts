@@ -1,21 +1,21 @@
 // =============================================================================
-// marquee.ts — optional enhancer for the CSS-only marquee (marquee.css)
+// marquee.ts - optional enhancer for the CSS-only marquee (marquee.css)
 //
 // PROBLEM IT SOLVES
 // The pure-CSS marquee hardcodes a `--marquee-duration` in seconds. That makes
 // the velocity inconsistent: the same 30s reads fast with 4 cards and crawls
 // with 12 (Coverly 2026: 60s/8 cards was visibly mis-calibrated). It also
-// assumes the author manually duplicated the set 2× — which only guarantees a
+// assumes the author manually duplicated the set 2× - which only guarantees a
 // seamless loop if 1 set is already WIDER than the viewport.
 //
 // This optional script fixes both, with NO change to the markup contract:
-//   1. AUTO-FILL — clones the FIRST set until the track is at least
+//   1. AUTO-FILL - clones the FIRST set until the track is at least
 //      (viewport width × 2), so a single set is never narrower than the clip.
 //      Then translateX(-50%) is always seamless regardless of item count.
-//   2. CONSTANT px/s SPEED — measures one set's width and sets
+//   2. CONSTANT px/s SPEED - measures one set's width and sets
 //      --marquee-duration = setWidth / pxPerSecond. Same perceived velocity for
 //      any number of items / any container width.
-//   3. REDUCED MOTION — if the user prefers reduced motion, it does NOT clone
+//   3. REDUCED MOTION - if the user prefers reduced motion, it does NOT clone
 //      and does NOT set a duration (CSS already pins `animation: none`). It also
 //      bails on a `change` so toggling the OS setting takes effect live.
 //
@@ -29,8 +29,8 @@
 //     </div>
 //   </div>
 //
-//   • data-marquee        — opt-in marker (required). Script targets only these.
-//   • data-marquee-speed  — pixels per second (default 40). The ONE knob a
+//   • data-marquee        - opt-in marker (required). Script targets only these.
+//   • data-marquee-speed  - pixels per second (default 40). The ONE knob a
 //                           director tunes; width/item-count no longer matter.
 //
 // CSS PAIRING
@@ -54,7 +54,7 @@ function setWidthOf(track: HTMLElement): number {
 }
 
 // Clone the FIRST .marquee_set (aria-hidden) until the track is wide enough that
-// `width: max-content` exceeds 2× the viewport — guarantees -50% is seamless and
+// `width: max-content` exceeds 2× the viewport - guarantees -50% is seamless and
 // the clip is always covered. Returns the width of ONE set (the loop period).
 function fill(el: MarqueeEl, track: HTMLElement): number {
   const original = track.querySelector<HTMLElement>('.marquee_set');
@@ -139,7 +139,7 @@ if (document.readyState === 'loading') {
 }
 
 // =============================================================================
-// ALTERNATIVE — GSAP horizontalLoop helper
+// ALTERNATIVE - GSAP horizontalLoop helper
 //
 // Use this variant ONLY when the CSS marquee is not enough:
 //   • items have DYNAMIC widths (CMS logos of different sizes) and you want a

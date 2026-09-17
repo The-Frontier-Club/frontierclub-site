@@ -1,5 +1,5 @@
 /* =============================================================================
-   anim.css — initial (hidden) states for JS-driven entrance animations.
+   anim.css - initial (hidden) states for JS-driven entrance animations.
 
    Every rule is gated on `html.anim-ready`, a class added synchronously in
    <head> (BaseLayout) ONLY when JavaScript runs and the user has not requested

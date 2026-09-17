@@ -13,7 +13,7 @@ const highlights = (await getCollection('highlights')).sort((a, b) => a.data.ord
 const APPLY_URL = 'https://form.typeform.com/to/Cs6etR3o';
 ---
 <BaseLayout
-  title="The Frontier Club — Join the Founding 200"
+  title="The Frontier Club - Join the Founding 200"
   description="The Frontier Club: a founding community of 200 members. Small-group, application-only trips built around the kind of travel that actually changes you. Founded by Harry Jaggard and Kieran Brown."
 >
   <Navbar logoSrc="/images/frontier-club-logo.png" brand="The Frontier Club" applyHref={APPLY_URL} />
@@ -25,8 +25,8 @@ const APPLY_URL = 'https://form.typeform.com/to/Cs6etR3o';
         <div class="hero_canvas">
           <div animation="home-img" class="hero_header-img"><video src="/videos/tfc-hero-video-compressed.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true" class="img"></video></div>
           <div animation="home-text" class="hero_wordmark">
-            <div class="hero_headline-main">if you want a piña colada on a sunbed</div>
-            <div class="hero_headline-sub font-secondary">this isn't for you</div>
+            <div class="hero_headline-main">JOIN THE FRONTIER CLUB</div>
+            <div class="hero_headline-sub font-secondary">AND DARE TO SAY YES.</div><div class="hero_cta"><a href={APPLY_URL} target="_blank" rel="noopener" class="hero_cta-link">APPLY NOW</a></div>
           </div>
           <div class="hero_bottom">
             <div class="padding-global">

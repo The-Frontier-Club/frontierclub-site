@@ -1,4 +1,4 @@
-// scroll-reveal.ts — Lyria animation system (Phase S3).
+// scroll-reveal.ts - Lyria animation system (Phase S3).
 // Faithful recreation of the source's two animation runtimes, decoded from
 // lyria-temlis.js (see lyria-source/ANIMATION_MAP.md):
 //
@@ -32,7 +32,7 @@ const $$ = <T extends HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
 
 /* ============================================================================
-   A) Hero LOAD entrance — timeline t-60b4c794 (wf:load, site scope → every page)
+   A) Hero LOAD entrance - timeline t-60b4c794 (wf:load, site scope → every page)
    One timeline; all actions positioned on the same line:
      home-img         scale 1.2→1      pos 0    dur .6  sine.in
      item             scale 0→1        pos 0    stagger amount .3 (from start)  sine.in
@@ -100,7 +100,7 @@ function initHeroLoad() {
    source presets. `data-reveal="<number>"` sets that legacy reveal's delay.
 
    Per-element stagger: each Webflow SCROLL_INTO_VIEW event carries its own
-   `delay` (ms) in the event config — sections cascade their children 0 / 100 /
+   `delay` (ms) in the event config - sections cascade their children 0 / 100 /
    200 / 300 ms even though they enter the viewport together. Carry that with
    `data-reveal-delay="<ms>"` on the preset path.
    ========================================================================== */
@@ -148,7 +148,7 @@ function initViewReveal() {
 }
 
 /* ============================================================================
-   C) Section vertical parallax — timeline t-c52944a0
+   C) Section vertical parallax - timeline t-c52944a0
    Trigger .section_latest (scrub .8, top bottom → bottom top); targets within:
    [animation="section"] yPercent 12 → -12, linear.
    ========================================================================== */
@@ -170,7 +170,7 @@ function initSectionParallax() {
 }
 
 /* ============================================================================
-   D) Scroll-driven marquee — timeline t-bac9e1e3
+   D) Scroll-driven marquee - timeline t-bac9e1e3
    Trigger .loop_flex (scrub .8, top bottom → bottom top); two rows slide opposite:
    text-scroll-one x -100%→0%, text-scroll-two x 0%→-100%, linear.
    ========================================================================== */
@@ -188,7 +188,7 @@ function initScrollMarquee() {
 }
 
 /* ============================================================================
-   E) Scroll word-highlight — timeline t-a924af47
+   E) Scroll word-highlight - timeline t-a924af47
    Trigger [animation="highlight"] (scrub .8, top bottom → bottom center);
    SplitText words, each opacity 50%→100%, stagger each .2, linear.
    ========================================================================== */
@@ -210,7 +210,7 @@ function initHighlight() {
 }
 
 /* ============================================================================
-   F) Per-letter link hover swap — timeline t-0a1ab51c
+   F) Per-letter link hover swap - timeline t-0a1ab51c
    Source applies to ALL .link_text-wrap site-wide; the navbar already wires its
    own copies, so here we handle every .link_text-wrap OUTSIDE [data-navbar].
    Both .text_link_tag copies' chars slide y → -100%, stagger amount .2 from
@@ -237,18 +237,18 @@ function initLinkHover() {
     // ITSELF (pluginConfig type:"mouseenter", trigger class "link_text-wrap").
     // Bind to the wrap, NOT a wrapping <a>: now that blog cards are a full-card
     // <a>, `closest('a')` would be the whole card → the letter-rise would fire on
-    // any card hover (it doesn't in the source — only the read-more text does).
+    // any card hover (it doesn't in the source - only the read-more text does).
     wrap.addEventListener('mouseenter', () => tl.play());
     wrap.addEventListener('mouseleave', () => tl.reverse());
   });
 }
 
 /* ============================================================================
-   G) Continuous "Loop" marquee — the giant LYRIA footer wordmark only.
+   G) Continuous "Loop" marquee - the giant LYRIA footer wordmark only.
    In the source this is the footer's CSS `footerMarquee` keyframes; we drive it
    in JS so any number of identical copies wraps seamlessly at one child width.
    NOTE: the `animation="loop"/"text-loop"` attribute hooks (e.g. the episode-
-   detail `.loop_flex.is-loop` bar) have NO handler in the source JS/CSS — they
+   detail `.loop_flex.is-loop` bar) have NO handler in the source JS/CSS - they
    are inert, so that bar is STATIC. Do not animate it.
    ========================================================================== */
 function continuousMarquee(track: HTMLElement, pxPerSecond: number, dir: 1 | -1) {
@@ -275,7 +275,7 @@ function initLoopMarquee() {
 }
 
 /* ============================================================================
-   H) Hero image parallax — source IX a-60 "Parallax Image" (already approved).
+   H) Hero image parallax - source IX a-60 "Parallax Image" (already approved).
    TWO targets: the frame `.home_hero-img` lags down so the title/links overlap
    it, and the inner `.img-parallax` crop drifts gap-safe within the frame.
    ========================================================================== */
@@ -284,7 +284,7 @@ function initHeroParallax() {
   $$('.home_hero-img').forEach((frame) => {
     const section = frame.closest<HTMLElement>('.section_hero') ?? frame;
     // Source a-60 "Parallax Image" (SCROLL_PROGRESS). Spans the full hero transit
-    // so the image is already offset at the top of the page and keeps drifting —
+    // so the image is already offset at the top of the page and keeps drifting -
     // matching the published site. The frame and the inner crop (.img-parallax)
     // move at DIFFERENT rates (the inner image drifts a touch more), which is the
     // parallax-within-parallax look of the published page.
@@ -307,13 +307,13 @@ function initHeroParallax() {
 }
 
 /* ============================================================================
-   H2) Detail-page hero image entrance — DESIGNER ADDITION (not in the Webflow
+   H2) Detail-page hero image entrance - DESIGNER ADDITION (not in the Webflow
    source; both detail hero images are static/parallax-only in the original).
    Simple opacity 0→1 + translateY 15%→0 from below, power3.out (the project's
    View-reveal vocabulary). Applied to BOTH detail heroes:
      • episode detail → .home_hero-img (also carries the a-60 parallax above;
        GSAP keeps `y` and `yPercent` as independent transform parts, so the
-       entrance `y` and the scrubbed parallax `yPercent` simply sum — no fight).
+       entrance `y` and the scrubbed parallax `yPercent` simply sum - no fight).
      • blog detail   → .hero_blog (static, no parallax).
    Initial opacity:0 is gated in anim.css (`html.anim-ready .home_hero-img,
    .hero_blog`) to avoid FOUC; reduced-motion bypasses entirely.
@@ -338,7 +338,7 @@ function initHeroImageReveal() {
 }
 
 /* ============================================================================
-   I) Portfolio card image hover — source a-52/a-53 ("Cursor Hover Card In/Out")
+   I) Portfolio card image hover - source a-52/a-53 ("Cursor Hover Card In/Out")
    On hover the "View More" pill (.view_button) scales + fades in (it starts
    hidden via CSS) and the image contrast pops 70% → 120%; reverse on leave.
    500ms outQuart (= power3.out). The pill's transform is GSAP-owned so the
@@ -387,7 +387,7 @@ function initPortfolioHover() {
 }
 
 /* ============================================================================
-   J) Portfolio "Scroll Three Cards" — source a-36 (SCROLL_PROGRESS, scrubbed
+   J) Portfolio "Scroll Three Cards" - source a-36 (SCROLL_PROGRESS, scrubbed
    over .relative). The 3 sticky cards stack; as the next one covers the current,
    the current slides down (yPercent +25), recedes in Z (−25vw → shrinks via the
    .relative perspective:1000px) and fades out. Keyframes (scroll progress):
@@ -414,7 +414,7 @@ function initPortfolioScroll() {
 }
 
 /* ============================================================================
-   K) Home hero parallax — source a-35 "Scroll Parallax Home" (SCROLL_PROGRESS,
+   K) Home hero parallax - source a-35 "Scroll Parallax Home" (SCROLL_PROGRESS,
    scrubbed over the hero). The image drifts DOWN (+40px) while the title,
    description and play-link row drift UP (−60px). Home only (these classes are
    the home hero; the detail-page parallax above uses .home_hero-img).
@@ -435,7 +435,7 @@ function initHeroParallaxHome() {
 }
 
 /* ============================================================================
-   L) About section "Scroll Smooth" — source a-39 (SCROLL_PROGRESS, scrubbed).
+   L) About section "Scroll Smooth" - source a-39 (SCROLL_PROGRESS, scrubbed).
    The whole .section_about rises (yPercent 20 → 0) and fades (opacity .85 → 1)
    over the first 20% of its scroll-through, then holds. Home only.
    ========================================================================== */
