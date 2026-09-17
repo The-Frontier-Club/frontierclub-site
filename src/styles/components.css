@@ -729,7 +729,7 @@ html {
   line-height: 1.3;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--_new-base--white) !important;
+  color: #ffffff !important;
   text-align: center;
   white-space: normal;
 }
