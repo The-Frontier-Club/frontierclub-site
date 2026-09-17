@@ -5,7 +5,7 @@ import type { APIRoute } from 'astro';
 // configured `site` (astro.config), so it stays correct across the deploy URL.
 // Per-page noindex (401/404) is handled by the <meta name="robots"> in BaseLayout.
 export const GET: APIRoute = ({ site }) => {
-  const base = site?.toString() ?? 'https://lyria.temlis.workers.dev';
+  const base = site?.toString() ?? 'https://joinfrontierclub.com';
   const body = `User-agent: *
 Allow: /
 

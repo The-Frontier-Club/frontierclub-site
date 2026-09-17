@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Deploy URL. Override with a SITE_URL env var (or repo variable in CI).
-const SITE = process.env.SITE_URL || 'https://the-frontier-club.dhitchcock.workers.dev';
+const SITE = process.env.SITE_URL || 'https://joinfrontierclub.com';
 
 // https://astro.build/config
 export default defineConfig({
