@@ -4,9 +4,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Deploy URL. Override with a SITE_URL env var (or repo variable in CI).
-// Finalized in Phase 8 to the real lyria.<account>.workers.dev (the
-// account subdomain is only known after the first deploy).
-const SITE = process.env.SITE_URL || 'https://lyria.temlis.workers.dev';
+const SITE = process.env.SITE_URL || 'https://the-frontier-club.dhitchcock.workers.dev';
 
 // https://astro.build/config
 export default defineConfig({
