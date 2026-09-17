@@ -972,3 +972,17 @@ html {
     margin-top: 0.35rem !important;
   }
 }
+/* Mission 200 image - desktop only */
+@media screen and (min-width: 992px) {
+  #stories .listener_img {
+    width: 18rem !important;
+    height: 18rem !important;
+    max-width: 18rem !important;
+  }
+
+  #stories .listener_img .img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+}
