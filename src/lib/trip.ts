@@ -11,5 +11,5 @@ export const trip = {
   price: '$4,750 USD',
   showPrice: false, // Pricing-visibility decision is still open (see earlier notes)
   overview:
-    "11 days. Two countries. No stone unturned.\n\nLet's discover Cape Town and Zimbabwe together in an action-fuelled 10 days designed to challenge your perspective on what adventurous travel can truly be. Expect cold-water plunges, real safari, and at least one moment that will make you miss home. Not a holiday. An adventure for those ready to take a walk outside their comfort zone - with the small-group energy that turns strangers into people you'd travel with again.",
+    "11 days. Two countries. No stone left unturned.\n\nLet's discover Cape Town and Zimbabwe together in an action-fuelled 10 days designed to challenge your perspective on what adventurous travel can truly be. Expect cold-water plunges, real safari, and at least one moment that will make you miss home. Not a holiday. An adventure for those ready to take a walk outside their comfort zone - with the small-group energy that turns strangers into people you'd travel with again.",
 };
