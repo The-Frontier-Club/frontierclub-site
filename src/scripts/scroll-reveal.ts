@@ -28,6 +28,7 @@ import { SplitText } from 'gsap/SplitText';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = window.matchMedia('(max-width: 767px)').matches;
 const $$ = <T extends HTMLElement>(sel: string, root: ParentNode = document) =>
   Array.from(root.querySelectorAll<T>(sel));
 
@@ -117,30 +118,44 @@ function presetVars(dir: string): [gsap.TweenVars, gsap.TweenVars] | null {
 }
 function initViewReveal() {
   if (reduce) return;
+
   $$('[data-reveal]').forEach((el) => {
     const dir = (el.dataset.reveal || '').trim();
     const preset = presetVars(dir);
+
     if (preset) {
-      const delay = (parseFloat(el.dataset.revealDelay || '0') || 0) / 1000; // ms → s
+      const delay = isMobile
+        ? 0
+        : (parseFloat(el.dataset.revealDelay || '0') || 0) / 1000;
+
       gsap.fromTo(el, preset[0], {
         ...preset[1],
-        duration: 1,
+        duration: isMobile ? 0.4 : 1,
         delay,
         ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 95%', once: true },
+        scrollTrigger: {
+          trigger: el,
+          start: isMobile ? 'top 98%' : 'top 95%',
+          once: true
+        },
       });
     } else {
-      const delay = parseFloat(dir) || 0.1;
+      const delay = isMobile ? 0 : parseFloat(dir) || 0.1;
+
       gsap.fromTo(
         el,
-        { opacity: 0, yPercent: 15 },
+        { opacity: 0, yPercent: isMobile ? 8 : 15 },
         {
           opacity: 1,
           yPercent: 0,
-          duration: 0.7,
+          duration: isMobile ? 0.4 : 0.7,
           delay,
           ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+          scrollTrigger: {
+            trigger: el,
+            start: isMobile ? 'top 98%' : 'top 85%',
+            once: true
+          },
         }
       );
     }
