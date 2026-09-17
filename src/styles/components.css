@@ -123,8 +123,23 @@ h1, h2, h3, h4, h5, h6,
 /* Same soft shadow as the headline above, scoped to the hero's paragraph
    specifically - .max-description is shared with the Trip section, which
    sits on a solid dark background and doesn't need it. */
-.hero_bottom .max-description {
-  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+.hero_intro-copy {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.hero_intro-copy > div {
+  font-family: var(--_typography---font-family--headers);
+  font-size: clamp(1.15rem, 1.4vw, 1.5rem);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-color--text-on-primary) !important;
+  text-align: center;
+  white-space: normal;
 }
 
 /* --- New logo sizing fixes ---
@@ -251,6 +266,19 @@ h1, h2, h3, h4, h5, h6,
    size. Let it wrap across two lines instead, at a fixed, legible size -
    trading exact width-matching for something you can actually read. */
 @media screen and (max-width: 479px) {
+
+  .hero_intro-copy {
+    max-width: 100%;
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .hero_intro-copy > div {
+    font-size: 1.05rem;
+    line-height: 1.35;
+    letter-spacing: 0;
+    text-align: center;
+  }
+
   .about_card-caption {
     font-size: 1.35rem;
     white-space: normal;
@@ -670,24 +698,101 @@ html {
 }
 
 /* --- Hero bottom bar --- */
-.hero_bottom { position: absolute; bottom: 0; left: 0; right: 0; background: var(--base--black); height: 5.5rem; display: flex; align-items: center; z-index: 2; }
-.hero_bottom .max-description { color: var(--base--sky-blue); text-shadow: none; max-width: none; width: 100%; font-size: .8125rem; line-height: 1.3; }
-.hero_bottom .hero_grid { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
-.hero_bottom .padding-top { display: none; }
-.nav_container { display: none; }
-.hero_cta { display: flex; justify-content: center; margin-top: 1.5rem; }
-.hero_cta-link { display: inline-block; background: var(--base--sky-blue); color: var(--base--black); font-family: var(--_typography---font-family--headers); font-size: 1.125rem; letter-spacing: .05em; padding: .85rem 2.5rem; border-radius: 999px; text-decoration: none; }
-.hero_cta { display: flex; justify-content: center; margin-top: 1.5rem; }
-.hero_cta-link { display: inline-block; background: var(--base--sky-blue); color: var(--base--black); font-family: var(--_typography---font-family--headers); font-size: 1.125rem; letter-spacing: .05em; padding: .85rem 2.5rem; border-radius: 999px; text-decoration: none; }
-.hero_canvas { min-height: 109svh; height: 109svh; padding-top: 6rem; padding-bottom: 0; }
-.hero_bottom .padding-global, .hero_bottom .padding-section-medium { padding-top: 0; padding-bottom: 0; }
-.hero_bottom .padding-global, .hero_bottom .hero_grid, .hero_bottom .max-description { padding-top: 0; padding-bottom: 0; margin-top: 0; margin-bottom: 0; } .hero_bottom .hero_grid { justify-content: center; }
-.hero_bottom .padding-top { display: none !important; } .hero_bottom .hero_grid { height: 100%; justify-content: center; gap: 0; }
-.hero_bottom [animation="text-bottom"], .hero_bottom [animation="text-description"] { transform: none !important; translate: none !important; }
-.hero_bottom .max-description { position: relative; top: -14px; }
-.hero_bottom .max-description { font-family: var(--_typography---font-family--headers); text-transform: uppercase; letter-spacing: .04em; font-size: .75rem; white-space: nowrap; }
-.hero_bottom .max-description { color: var(--new-base---white) !important; }
-.hero_bottom .hero_grid { align-items: center !important; } .hero_bottom .max-description { text-align: center; }
-.hero_bottom { justify-content: center !important; }
-.hero_bottom .padding-global { width: 100% !important; max-width: none !important; padding-left: 0 !important; padding-right: 0 !important; display: flex !important; justify-content: center !important; }
-.hero_bottom .hero_grid { justify-content: center !important; align-items: center !important; width: 100% !important; }
+
+.hero_bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--base--black);
+  min-height: 6.5rem;
+  height: auto;
+  padding: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+  z-index: 2;
+}
+
+.hero_intro-copy {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  text-align: center;
+}
+
+.hero_intro-copy > div {
+  font-family: var(--_typography---font-family--headers);
+  font-size: clamp(1.15rem, 1.4vw, 1.5rem);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--_new-base--white) !important;
+  text-align: center;
+  white-space: normal;
+}
+
+.hero_bottom .padding-global {
+  width: 100% !important;
+  max-width: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.hero_bottom .hero_grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 100%;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.hero_bottom .padding-top {
+  display: none !important;
+}
+
+.hero_bottom [animation="text-bottom"],
+.hero_bottom [animation="text-description"] {
+  transform: none !important;
+  translate: none !important;
+}
+
+.nav_container {
+  display: none;
+}
+
+.hero_cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.hero_cta-link {
+  display: inline-block;
+  background: var(--base--sky-blue);
+  color: var(--base--black);
+  font-family: var(--_typography---font-family--headers);
+  font-size: 1.125rem;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 2.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.hero_canvas {
+  min-height: 109svh;
+  height: 109svh;
+  padding-top: 6rem;
+  padding-bottom: 0;
+}
