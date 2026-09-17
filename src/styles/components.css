@@ -823,99 +823,110 @@ html {
    Mobile: diagonal paired layout
    ========================================================= */
 
-.founders-stats-grid {
+/* =========================================================
+   FOUNDERS STATS + PHOTOS
+   ========================================================= */
+
+.about_images.founders-stats-grid {
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.25rem;
-  align-items: start;
-  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1.25rem !important;
+  align-items: start !important;
+  width: 100% !important;
+  position: relative !important;
 }
 
+/* All four blocks */
 .founder-stat,
 .founder-photo {
-  width: 100%;
-  min-width: 0;
-}
-
-/* Shared stat cards */
-.founder-stat {
-  aspect-ratio: 1 / 1;
-  padding: 1.5rem;
-  display: flex !important;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Harry stat = lime */
-.founder-stat-harry {
-  background: var(--base--sky-blue);
-  color: var(--base--black);
-}
-
-/* Kieran stat = white */
-.founder-stat-kieran {
-  background: #ffffff;
-  color: var(--base--black);
-}
-
-.founder-stat-name {
-  font-family: var(--_typography---font-family--headers);
-  text-transform: uppercase;
-  font-size: clamp(1rem, 1.4vw, 1.5rem);
-  line-height: 1;
-  color: var(--base--black);
-  margin-bottom: 0.35rem;
-}
-
-.founder-stat .text_card {
-  color: var(--base--black);
-  font-size: clamp(5rem, 8vw, 8.5rem);
-  line-height: 0.88;
-  width: 100%;
-}
-
-.founder-stat .about_card-caption {
-  color: var(--base--black);
-  font-size: clamp(0.85rem, 1.3vw, 1.25rem);
-  line-height: 1;
-  white-space: nowrap;
-  width: 100%;
-  margin-top: 0.6rem;
-}
-
-/* Founder photos */
-.founder-photo {
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-}
-
-.founder-photo .img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  position: relative !important;
+  min-width: 0 !important;
   display: block;
 }
 
+/* STAT CARDS */
+.founder-stat {
+  padding: 1.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+/* Harry = lime */
+.founder-stat-harry {
+  background: var(--base--sky-blue) !important;
+  color: #111111 !important;
+}
+
+/* Kieran = white */
+.founder-stat-kieran {
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
+.founder-stat-name {
+  display: block !important;
+  font-family: var(--_typography---font-family--headers);
+  font-size: clamp(1rem, 1.4vw, 1.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #111111 !important;
+  margin-bottom: 0.4rem;
+}
+
+.founder-stat .text_card {
+  color: #111111 !important;
+  font-size: clamp(5rem, 8vw, 8rem) !important;
+  line-height: 0.85 !important;
+  width: 100% !important;
+}
+
+.founder-stat .about_card-caption {
+  color: #111111 !important;
+  font-size: clamp(0.8rem, 1.25vw, 1.2rem) !important;
+  line-height: 1 !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: 100% !important;
+  margin-top: 0.65rem !important;
+}
+
+/* PHOTOS */
+.founder-photo {
+  overflow: hidden !important;
+}
+
+.founder-photo .img {
+  display: block !important;
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  inset: auto !important;
+  transform: none !important;
+}
+
 .founder-photo-harry .img {
-  object-position: center center;
+  object-position: center center !important;
 }
 
 .founder-photo-kieran .img {
-  object-position: center center;
+  object-position: center center !important;
 }
 
-/* Mobile diagonal layout */
+/* MOBILE: diagonal checkerboard */
 @media screen and (max-width: 479px) {
-  .founders-stats-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
+  .about_images.founders-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     grid-template-areas:
       "harry-photo harry-stat"
-      "kieran-stat kieran-photo";
-    gap: 0.65rem;
-    align-items: stretch;
+      "kieran-stat kieran-photo" !important;
+    gap: 0.6rem !important;
   }
 
   .founder-photo-harry {
@@ -936,38 +947,28 @@ html {
 
   .founder-stat,
   .founder-photo {
-    aspect-ratio: 1 / 1;
-    width: 100%;
-    max-width: none;
-    position: relative;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
   }
 
   .founder-stat {
-    padding: 0.75rem;
-    justify-content: center;
+    padding: 0.7rem !important;
   }
 
   .founder-stat-name {
-    font-size: 0.9rem;
-    margin-bottom: 0.2rem;
+    font-size: 0.8rem !important;
+    margin-bottom: 0.15rem;
   }
 
   .founder-stat .text_card {
-    font-size: clamp(3.5rem, 19vw, 5rem);
-    line-height: 0.85;
+    font-size: clamp(3.4rem, 18vw, 5rem) !important;
+    line-height: 0.85 !important;
   }
 
   .founder-stat .about_card-caption {
-    font-size: clamp(0.62rem, 3.2vw, 0.85rem);
-    line-height: 1;
-    white-space: normal;
-    margin-top: 0.4rem;
-  }
-
-  .founder-photo .img {
-    position: static;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    font-size: clamp(0.58rem, 3vw, 0.8rem) !important;
+    line-height: 1 !important;
+    white-space: normal !important;
+    margin-top: 0.35rem !important;
   }
 }
