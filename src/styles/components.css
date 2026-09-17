@@ -817,3 +817,157 @@ html {
     padding: 0.75rem 0;
   }
 }
+/* =========================================================
+   Founder country stats
+   Desktop: stat / photo / photo / stat
+   Mobile: diagonal paired layout
+   ========================================================= */
+
+.founders-stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+  width: 100%;
+}
+
+.founder-stat,
+.founder-photo {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Shared stat cards */
+.founder-stat {
+  aspect-ratio: 1 / 1;
+  padding: 1.5rem;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Harry stat = lime */
+.founder-stat-harry {
+  background: var(--base--sky-blue);
+  color: var(--base--black);
+}
+
+/* Kieran stat = white */
+.founder-stat-kieran {
+  background: #ffffff;
+  color: var(--base--black);
+}
+
+.founder-stat-name {
+  font-family: var(--_typography---font-family--headers);
+  text-transform: uppercase;
+  font-size: clamp(1rem, 1.4vw, 1.5rem);
+  line-height: 1;
+  color: var(--base--black);
+  margin-bottom: 0.35rem;
+}
+
+.founder-stat .text_card {
+  color: var(--base--black);
+  font-size: clamp(5rem, 8vw, 8.5rem);
+  line-height: 0.88;
+  width: 100%;
+}
+
+.founder-stat .about_card-caption {
+  color: var(--base--black);
+  font-size: clamp(0.85rem, 1.3vw, 1.25rem);
+  line-height: 1;
+  white-space: nowrap;
+  width: 100%;
+  margin-top: 0.6rem;
+}
+
+/* Founder photos */
+.founder-photo {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.founder-photo .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.founder-photo-harry .img {
+  object-position: center center;
+}
+
+.founder-photo-kieran .img {
+  object-position: center center;
+}
+
+/* Mobile diagonal layout */
+@media screen and (max-width: 479px) {
+  .founders-stats-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "harry-photo harry-stat"
+      "kieran-stat kieran-photo";
+    gap: 0.65rem;
+    align-items: stretch;
+  }
+
+  .founder-photo-harry {
+    grid-area: harry-photo;
+  }
+
+  .founder-stat-harry {
+    grid-area: harry-stat;
+  }
+
+  .founder-stat-kieran {
+    grid-area: kieran-stat;
+  }
+
+  .founder-photo-kieran {
+    grid-area: kieran-photo;
+  }
+
+  .founder-stat,
+  .founder-photo {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: none;
+    position: relative;
+  }
+
+  .founder-stat {
+    padding: 0.75rem;
+    justify-content: center;
+  }
+
+  .founder-stat-name {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .founder-stat .text_card {
+    font-size: clamp(3.5rem, 19vw, 5rem);
+    line-height: 0.85;
+  }
+
+  .founder-stat .about_card-caption {
+    font-size: clamp(0.62rem, 3.2vw, 0.85rem);
+    line-height: 1;
+    white-space: normal;
+    margin-top: 0.4rem;
+  }
+
+  .founder-photo .img {
+    position: static;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
