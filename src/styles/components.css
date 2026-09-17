@@ -133,7 +133,7 @@ h1, h2, h3, h4, h5, h6,
 
 .hero_intro-copy > div {
   font-family: var(--_typography---font-family--headers);
-  font-size: clamp(1.15rem, 1.4vw, 1.5rem);
+  font-size: clamp(1.35rem, 1.65vw, 1.75rem);
   line-height: 1.3;
   letter-spacing: 0.02em;
   text-transform: uppercase;
