@@ -10,7 +10,7 @@ export const trip = {
   groupSize: 'Max 12 travelers', // TODO: confirm real group size
   price: '$4,750 USD',
   showPrice: false, // Pricing-visibility decision is still open (see earlier notes)
-overview: `11 days. Two countries. No stone left unturned.
+overview: `10 days. Two countries. No stone left unturned.
 
 Let's discover Cape Town and Zimbabwe together on an action-fuelled journey designed to challenge your perspective on what adventurous travel can truly be.
 
