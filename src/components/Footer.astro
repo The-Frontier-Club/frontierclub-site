@@ -16,6 +16,7 @@ const quickLinksA = [
 
 const quickLinksB = [
   { href: 'https://form.typeform.com/to/Cs6etR3o', label: 'Apply', external: true },
+  { href: '#contact', label: 'Contact us', contact: true },
 ];
 
 const sellerLinks = [
@@ -50,18 +51,35 @@ const year = new Date().getFullYear();
         </div>
         <div data-reveal="bottom" data-reveal-delay="200" class="footer_links">
           <div class="footer_column">
-            {quickLinksB.map((link) => (
-              <a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener' : undefined} class={`footer_link w-inline-block${isCurrent(link.href) ? ' w--current' : ''}`}>
-                <div class="play_link">
-                  <div class="link_text-wrap">
-                    <div class="text_link_tag">{link.label}</div>
-                    <div class="text_link_tag is-absolute">{link.label}</div>
-                  </div>
-                </div>
-              </a>
-            ))}
+ {quickLinksB.map((link) => (
+  link.contact ? (
+    <button type="button" class="footer_link w-inline-block contact-trigger">
+      <div class="play_link">
+        <div class="link_text-wrap">
+          <div class="text_link_tag">{link.label}</div>
+          <div class="text_link_tag is-absolute">{link.label}</div>
+        </div>
+      </div>
+    </button>
+  ) : (
+    <a
+      href={link.href}
+      target={link.external ? '_blank' : undefined}
+      rel={link.external ? 'noopener' : undefined}
+      class={`footer_link w-inline-block${isCurrent(link.href) ? ' w--current' : ''}`}
+    >
+      <div class="play_link">
+        <div class="link_text-wrap">
+          <div class="text_link_tag">{link.label}</div>
+          <div class="text_link_tag is-absolute">{link.label}</div>
+        </div>
+      </div>
+    </a>
+  )
+))}
           </div>
         </div>
+
         <div data-reveal="bottom" data-reveal-delay="300" class="footer_links">
           <div class="footer_column">
             {sellerLinks.map((link) => (
@@ -93,4 +111,164 @@ const year = new Date().getFullYear();
       </div>
     </div>
   </div>
+<div id="contact-modal" class="contact-modal" aria-hidden="true">
+  <div class="contact-modal_backdrop"></div>
+
+  <div class="contact-modal_panel" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+    <button type="button" class="contact-modal_close" aria-label="Close contact window">×</button>
+
+    <div class="contact-modal_label">Contact us</div>
+    <h2 id="contact-modal-title" class="contact-modal_title">GET IN TOUCH</h2>
+
+    <div class="contact-modal_links">
+      <a href="mailto:contact@joinfrontierclub.com" class="contact-modal_link">
+        <span>Email</span>
+        <strong>contact@joinfrontierclub.com</strong>
+      </a>
+
+      <a href="https://wa.me/447500967316" target="_blank" rel="noopener" class="contact-modal_link">
+        <span>WhatsApp</span>
+        <strong>+44 7500 967316</strong>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.querySelector('#contact-modal');
+  const triggers = document.querySelectorAll('.contact-trigger');
+  const closeButton = document.querySelector('.contact-modal_close');
+  const backdrop = document.querySelector('.contact-modal_backdrop');
+
+  const openModal = () => {
+    modal?.classList.add('is-open');
+    modal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    modal?.classList.remove('is-open');
+    modal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  triggers.forEach((trigger) => trigger.addEventListener('click', openModal));
+  closeButton?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeModal();
+  });
+</script>
+
+<style>
+  .contact-trigger {
+appearance: none;    
+background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .contact-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .contact-modal.is-open {
+    display: flex;
+  }
+
+  .contact-modal_backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(4px);
+  }
+
+  .contact-modal_panel {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 34rem);
+    background: #171717;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 2.5rem;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+  }
+
+  .contact-modal_close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: 0;
+    background: none;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .contact-modal_label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fff;
+    opacity: 0.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-modal_title {
+    margin: 0 0 2rem;
+    font-family: var(--_typography---font-family--headers);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 0.95;
+    color: var(--base--sky-blue);
+  }
+
+  .contact-modal_links {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .contact-modal_link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .contact-modal_link:last-child {
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .contact-modal_link span {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.65;
+  }
+
+  .contact-modal_link strong {
+    font-size: 1.1rem;
+    font-weight: 500;
+overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 767px) {
+    .contact-modal_panel {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>
 </section>
